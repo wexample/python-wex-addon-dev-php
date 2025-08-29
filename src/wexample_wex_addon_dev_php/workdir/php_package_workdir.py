@@ -23,6 +23,3 @@ class PhpPackageWorkdir(PhpWorkdir):
 
     def get_dependencies(self) -> list[str]:
         return []
-
-    def get_package_name(self) -> str:
-        return self.get_project_name()
