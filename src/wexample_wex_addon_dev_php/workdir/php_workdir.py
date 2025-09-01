@@ -1,6 +1,9 @@
 from __future__ import annotations
 
 from wexample_config.const.types import DictConfig
+from wexample_filestate.config_option.children_file_factory_config_option import (
+    ChildrenFileFactoryConfigOption,
+)
 from wexample_filestate.const.disk import DiskItemType
 from wexample_wex_core.workdir.code_base_workdir import CodeBaseWorkdir
 
@@ -39,3 +42,22 @@ class PhpWorkdir(CodeBaseWorkdir):
     def get_dependencies(self) -> list[str]:
         # TODO search in composer.json
         return []
+
+    def _create_php_file_children_filter(self) -> ChildrenFileFactoryConfigOption:
+        from wexample_filestate.config_option.children_filter_config_option import (
+            ChildrenFilterConfigOption,
+        )
+        from wexample_filestate.const.disk import DiskItemType
+        from wexample_filestate_python.file.python_file import PythonFile
+
+        return ChildrenFilterConfigOption(
+            pattern={
+                "class": PythonFile,
+                "name_pattern": r"^.*\.php$",
+                "type": DiskItemType.FILE,
+                "python": [
+
+                ],
+            },
+            recursive=True,
+        )
