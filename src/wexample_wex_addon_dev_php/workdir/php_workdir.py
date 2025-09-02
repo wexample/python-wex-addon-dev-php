@@ -25,17 +25,15 @@ class PhpWorkdir(CodeBaseWorkdir):
         )
 
         # Add rules to .gitignore
-        array_dict_get_by(
-            "name",
-            ".gitignore",
-            children
-        ).setdefault(
+        array_dict_get_by("name", ".gitignore", children).setdefault(
             "should_contain_lines", []
-        ).extend([
-            ".php-cs-fixer.cache",
-            ".scannerwork",
-            "/vendor",
-        ])
+        ).extend(
+            [
+                ".php-cs-fixer.cache",
+                ".scannerwork",
+                "/vendor",
+            ]
+        )
 
         return raw_value
 
@@ -55,9 +53,7 @@ class PhpWorkdir(CodeBaseWorkdir):
                 "class": PythonFile,
                 "name_pattern": r"^.*\.php$",
                 "type": DiskItemType.FILE,
-                "python": [
-
-                ],
+                "python": [],
             },
             recursive=True,
         )
