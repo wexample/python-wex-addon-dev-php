@@ -46,11 +46,11 @@ class PhpWorkdir(CodeBaseWorkdir):
             ChildrenFilterConfigOption,
         )
         from wexample_filestate.const.disk import DiskItemType
-        from wexample_filestate_python.file.python_file import PythonFile
+        from wexample_filestate_php.file.php_file import PhpFile
 
         return ChildrenFilterConfigOption(
             pattern={
-                "class": PythonFile,
+                "class": PhpFile,
                 "name_pattern": r"^.*\.php$",
                 "type": DiskItemType.FILE,
                 "python": [],

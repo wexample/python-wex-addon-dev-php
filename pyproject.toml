@@ -33,6 +33,7 @@ homepage = "https://github.com/wexample/python-wex-dev-python"
 [project.optional-dependencies]
 dev = [
     "pytest",
+    "wexample-filestate-php==0.0.1",
 ]
 
 [tool.pdm]
