@@ -1,17 +1,16 @@
 from __future__ import annotations
-
-from wexample_config.const.types import DictConfig
-from wexample_filestate.config_option.children_file_factory_config_option import (
-    ChildrenFileFactoryConfigOption,
-)
-from wexample_filestate.const.disk import DiskItemType
 from wexample_wex_core.workdir.code_base_workdir import CodeBaseWorkdir
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from wexample_filestate.config_option.children_file_factory_config_option import ChildrenFileFactoryConfigOption
+    from wexample_config.const.types import DictConfig
 
 
 class PhpWorkdir(CodeBaseWorkdir):
     def prepare_value(self, raw_value: DictConfig | None = None) -> DictConfig:
-        raw_value = super().prepare_value(raw_value=raw_value)
+        from wexample_filestate.const.disk import DiskItemType
         from wexample_helpers.helpers.array import array_dict_get_by
+        raw_value = super().prepare_value(raw_value=raw_value)
 
         # Ensure a composer.json file exists for any PHP package project
         children = raw_value["children"]
@@ -42,9 +41,7 @@ class PhpWorkdir(CodeBaseWorkdir):
         return []
 
     def _create_php_file_children_filter(self) -> ChildrenFileFactoryConfigOption:
-        from wexample_filestate.config_option.children_filter_config_option import (
-            ChildrenFilterConfigOption,
-        )
+        from wexample_filestate.config_option.children_filter_config_option import ChildrenFilterConfigOption
         from wexample_filestate.const.disk import DiskItemType
         from wexample_filestate_php.file.php_file import PhpFile
 
