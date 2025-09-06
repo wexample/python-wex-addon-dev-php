@@ -1,7 +1,8 @@
 from __future__ import annotations
-
-from wexample_config.const.types import DictConfig
 from wexample_wex_addon_dev_php.workdir.php_workdir import PhpWorkdir
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from wexample_config.const.types import DictConfig
 
 
 class PhpLaravelWorkdir(PhpWorkdir):
