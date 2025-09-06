@@ -14,7 +14,9 @@ if TYPE_CHECKING:
 
 class PhpPackagesSuiteWorkdir(FrameworkPackageSuiteWorkdir):
     def _get_children_package_workdir_class(self) -> type[CodeBaseWorkdir]:
-        from wexample_wex_addon_dev_php.workdir.php_package_workdir import PhpPackageWorkdir
+        from wexample_wex_addon_dev_php.workdir.php_package_workdir import (
+            PhpPackageWorkdir,
+        )
 
         return PhpPackageWorkdir
 

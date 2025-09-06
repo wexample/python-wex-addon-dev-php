@@ -46,7 +46,9 @@ class PhpWorkdir(CodeBaseWorkdir):
         return []
 
     def _create_php_file_children_filter(self) -> ChildrenFileFactoryConfigOption:
-        from wexample_filestate.config_option.children_filter_config_option import ChildrenFilterConfigOption
+        from wexample_filestate.config_option.children_filter_config_option import (
+            ChildrenFilterConfigOption,
+        )
         from wexample_filestate.const.disk import DiskItemType
         from wexample_filestate_php.file.php_file import PhpFile
 
