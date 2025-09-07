@@ -15,6 +15,7 @@ class PhpWorkdir(CodeBaseWorkdir):
     def prepare_value(self, raw_value: DictConfig | None = None) -> DictConfig:
         from wexample_filestate.const.disk import DiskItemType
         from wexample_helpers.helpers.array import array_dict_get_by
+
         raw_value = super().prepare_value(raw_value=raw_value)
 
         # Ensure a composer.json file exists for any PHP package project
