@@ -42,9 +42,6 @@ dev = [
 distribution = true
 
 [tool.pdm.build]
-includes = [
-    'src/wexample_wex_addon_dev_php/*',
-]
 package-dir = "src"
 
 [[tool.pdm.build.packages]]
