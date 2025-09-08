@@ -12,7 +12,6 @@ if TYPE_CHECKING:
 
 
 class PhpWorkdir(CodeBaseWorkdir):
-
     def get_dependencies(self) -> list[str]:
         # TODO search in composer.json
         return []

@@ -13,7 +13,6 @@ if TYPE_CHECKING:
 
 
 class PhpPackagesSuiteWorkdir(FrameworkPackageSuiteWorkdir):
-
     def _child_is_package_directory(self, entry: Path) -> bool:
         return entry.is_dir() and (entry / "composer.json").is_file()
 
