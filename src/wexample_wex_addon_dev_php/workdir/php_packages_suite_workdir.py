@@ -13,15 +13,15 @@ if TYPE_CHECKING:
 
 
 class PhpPackagesSuiteWorkdir(FrameworkPackageSuiteWorkdir):
+
+    def _child_is_package_directory(self, entry: Path) -> bool:
+        return entry.is_dir() and (entry / "composer.json").is_file()
+
+    def _get_children_package_directory_name(self) -> str:
+        return "composer"
     def _get_children_package_workdir_class(self) -> type[CodeBaseWorkdir]:
         from wexample_wex_addon_dev_php.workdir.php_package_workdir import (
             PhpPackageWorkdir,
         )
 
         return PhpPackageWorkdir
-
-    def _get_children_package_directory_name(self) -> str:
-        return "composer"
-
-    def _child_is_package_directory(self, entry: Path) -> bool:
-        return entry.is_dir() and (entry / "composer.json").is_file()

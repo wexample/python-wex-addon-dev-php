@@ -12,6 +12,10 @@ if TYPE_CHECKING:
 
 
 class PhpWorkdir(CodeBaseWorkdir):
+
+    def get_dependencies(self) -> list[str]:
+        # TODO search in composer.json
+        return []
     def prepare_value(self, raw_value: DictConfig | None = None) -> DictConfig:
         from wexample_filestate.const.disk import DiskItemType
         from wexample_helpers.helpers.array import array_dict_get_by
@@ -41,10 +45,6 @@ class PhpWorkdir(CodeBaseWorkdir):
         )
 
         return raw_value
-
-    def get_dependencies(self) -> list[str]:
-        # TODO search in composer.json
-        return []
 
     def _create_php_file_children_filter(self) -> ChildrenFileFactoryConfigOption:
         from wexample_filestate.config_option.children_filter_config_option import (
