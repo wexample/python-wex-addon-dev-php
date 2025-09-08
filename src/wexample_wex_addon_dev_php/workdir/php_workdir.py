@@ -16,6 +16,7 @@ class PhpWorkdir(CodeBaseWorkdir):
     def get_dependencies(self) -> list[str]:
         # TODO search in composer.json
         return []
+
     def prepare_value(self, raw_value: DictConfig | None = None) -> DictConfig:
         from wexample_filestate.const.disk import DiskItemType
         from wexample_helpers.helpers.array import array_dict_get_by
