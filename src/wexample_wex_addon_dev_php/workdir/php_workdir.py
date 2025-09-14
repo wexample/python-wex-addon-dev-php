@@ -7,7 +7,7 @@ from wexample_wex_core.workdir.code_base_workdir import CodeBaseWorkdir
 if TYPE_CHECKING:
     from wexample_config.const.types import DictConfig
     from wexample_filestate.option.children_file_factory_option import (
-        ChildrenFileFactoryConfigOption,
+        ChildrenFileFactoryOption,
     )
 
 
@@ -46,14 +46,14 @@ class PhpWorkdir(CodeBaseWorkdir):
 
         return raw_value
 
-    def _create_php_file_children_filter(self) -> ChildrenFileFactoryConfigOption:
+    def _create_php_file_children_filter(self) -> ChildrenFileFactoryOption:
         from wexample_filestate.option.children_filter_option import (
-            ChildrenFilterConfigOption,
+            ChildrenFilterOption,
         )
         from wexample_filestate.const.disk import DiskItemType
         from wexample_filestate_php.file.php_file import PhpFile
 
-        return ChildrenFilterConfigOption(
+        return ChildrenFilterOption(
             pattern={
                 "class": PhpFile,
                 "name_pattern": r"^.*\.php$",
