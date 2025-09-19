@@ -47,10 +47,10 @@ class PhpWorkdir(CodeBaseWorkdir):
         return raw_value
 
     def _create_php_file_children_filter(self) -> ChildrenFileFactoryOption:
+        from wexample_filestate.const.disk import DiskItemType
         from wexample_filestate.option.children_filter_option import (
             ChildrenFilterOption,
         )
-        from wexample_filestate.const.disk import DiskItemType
         from wexample_filestate_php.file.php_file import PhpFile
 
         return ChildrenFilterOption(
