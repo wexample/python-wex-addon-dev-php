@@ -34,6 +34,7 @@ homepage = "https://github.com/wexample/python-wex-dev-python"
 [project.optional-dependencies]
 dev = [
     "pytest",
+    "pytest-cov",
     "wexample-filestate-php==0.0.1",
 ]
 
@@ -46,3 +47,7 @@ package-dir = "src"
 [[tool.pdm.build.packages]]
 include = "wexample_wex_addon_dev_php"
 from = "src"
+
+[tool.setuptools.packages.find]
+include = ["*"]
+exclude = ["wexample_wex_addon_dev_php.testing*"]
