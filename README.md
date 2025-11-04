@@ -1,6 +1,6 @@
 # wexample-wex-addon-dev-php
 
-Version: 0.0.8
+Version: 0.0.11
 
 Python dev addon for wex
 
