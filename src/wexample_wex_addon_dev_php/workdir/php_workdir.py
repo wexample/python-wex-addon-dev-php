@@ -16,6 +16,10 @@ class PhpWorkdir(CodeBaseWorkdir):
         # TODO search in composer.json
         return []
 
+    def get_main_code_file_extension(self) -> str:
+        from wexample_filestate_php.const.php_file import PHP_FILE_EXTENSION
+        return PHP_FILE_EXTENSION
+
     def prepare_value(self, raw_value: DictConfig | None = None) -> DictConfig:
         from wexample_filestate.const.disk import DiskItemType
         from wexample_helpers.helpers.array import array_dict_get_by
