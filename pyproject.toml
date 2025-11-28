@@ -30,7 +30,6 @@ homepage = "https://github.com/wexample/python-wex-dev-python"
 dev = [
     "pytest",
     "pytest-cov",
-    "wexample-filestate-php==0.0.1",
 ]
 
 [tool.setuptools.packages.find]
