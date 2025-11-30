@@ -18,6 +18,7 @@ class PhpWorkdir(CodeBaseWorkdir):
 
     def get_main_code_file_extension(self) -> str:
         from wexample_filestate_php.const.php_file import PHP_FILE_EXTENSION
+
         return PHP_FILE_EXTENSION
 
     def prepare_value(self, raw_value: DictConfig | None = None) -> DictConfig:
