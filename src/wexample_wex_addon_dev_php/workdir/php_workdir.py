@@ -119,11 +119,11 @@ class PhpWorkdir(CodeBaseWorkdir):
         return ChildrenFilterOption(
             pattern={
                 "class": PhpFile,
-                "name_pattern": r"^.*\.php$",
                 "type": DiskItemType.FILE,
                 "php": [
                     PhpcsFixerOption.get_name()
                 ],
             },
+            name_pattern=r"^.*\.php$",
             recursive=True,
         )
