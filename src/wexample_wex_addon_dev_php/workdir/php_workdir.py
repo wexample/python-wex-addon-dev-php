@@ -2,9 +2,13 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from wexample_filestate_php.option.php.phpcs_fixer_option import PhpcsFixerOption
 from wexample_wex_addon_app.workdir.code_base_workdir import CodeBaseWorkdir
 
 if TYPE_CHECKING:
+    from wexample_config.options_provider.abstract_options_provider import (
+        AbstractOptionsProvider,
+    )
     from wexample_config.const.types import DictConfig
     from wexample_filestate.option.children_file_factory_option import (
         ChildrenFileFactoryOption,
@@ -33,6 +37,21 @@ class PhpWorkdir(CodeBaseWorkdir):
         from wexample_filestate_php.const.php_file import PHP_FILE_EXTENSION
 
         return PHP_FILE_EXTENSION
+
+    def get_options_providers(self) -> list[type[AbstractOptionsProvider]]:
+        from wexample_filestate_php.options_provider.php_options_provider import (
+            PhpOptionsProvider,
+        )
+
+        options = super().get_options_providers()
+
+        options.extend(
+            [
+                PhpOptionsProvider,
+            ]
+        )
+
+        return options
 
     def prepare_value(self, raw_value: DictConfig | None = None) -> DictConfig:
         from wexample_filestate.const.disk import DiskItemType
@@ -67,6 +86,27 @@ class PhpWorkdir(CodeBaseWorkdir):
             ]
         )
 
+        children.extend(
+            [
+                {
+                    "name": "tests",
+                    "type": DiskItemType.DIRECTORY,
+                    "should_exist": True,
+                    "children": [
+                        self._create_php_file_children_filter(),
+                    ],
+                },
+                {
+                    "name": "src",
+                    "type": DiskItemType.DIRECTORY,
+                    "should_exist": True,
+                    "children": [
+                        self._create_php_file_children_filter(),
+                    ],
+                },
+            ]
+        )
+
         return raw_value
 
     def _create_php_file_children_filter(self) -> ChildrenFileFactoryOption:
@@ -81,7 +121,9 @@ class PhpWorkdir(CodeBaseWorkdir):
                 "class": PhpFile,
                 "name_pattern": r"^.*\.php$",
                 "type": DiskItemType.FILE,
-                "python": [],
+                "php": [
+                    PhpcsFixerOption.get_name()
+                ],
             },
             recursive=True,
         )
