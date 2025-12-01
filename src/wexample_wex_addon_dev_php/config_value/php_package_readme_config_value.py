@@ -7,4 +7,6 @@ from wexample_wex_addon_app.config_value.app_readme_config_value import AppReadm
 @base_class
 class PhpPackageReadmeContentConfigValue(AppReadmeConfigValue):
     """README generation for Php packages."""
-    pass
+
+    def _get_app_description(self) -> str:
+        return self.workdir.get_app_config().get("description", "")
