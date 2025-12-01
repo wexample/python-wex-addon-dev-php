@@ -9,18 +9,17 @@ if TYPE_CHECKING:
     from wexample_filestate.option.children_file_factory_option import (
         ChildrenFileFactoryOption,
     )
-    from wexample_wex_addon_dev_php.file.php_composer_json_file import PhpPackageComposerJsonFile
+    from wexample_wex_addon_dev_php.file.php_composer_json_file import PhpComposerJsonFile
 
 
 class PhpWorkdir(CodeBaseWorkdir):
+    def get_dependencies_versions(self) -> dict[str, str]:
+        return self.get_app_config_file().get_dependencies_versions()
 
-    def get_dependencies(self) -> list[str]:
-        return self.get_app_config().get("require", []).keys()
+    def get_app_config_file(self, reload: bool = True) -> PhpComposerJsonFile:
+        from wexample_wex_addon_dev_php.file.php_composer_json_file import PhpComposerJsonFile
 
-    def get_app_config_file(self, reload: bool = True) -> PhpPackageComposerJsonFile:
-        from wexample_wex_addon_dev_php.file.php_composer_json_file import PhpPackageComposerJsonFile
-
-        config_file = self.find_by_type(PhpPackageComposerJsonFile)
+        config_file = self.find_by_type(PhpComposerJsonFile)
         # Read once to populate content with file source.
         config_file.read_text(reload=reload)
         return config_file
@@ -33,7 +32,7 @@ class PhpWorkdir(CodeBaseWorkdir):
     def prepare_value(self, raw_value: DictConfig | None = None) -> DictConfig:
         from wexample_filestate.const.disk import DiskItemType
         from wexample_helpers.helpers.array import array_dict_get_by
-        from wexample_wex_addon_dev_php.file.php_composer_json_file import PhpPackageComposerJsonFile
+        from wexample_wex_addon_dev_php.file.php_composer_json_file import PhpComposerJsonFile
 
         raw_value = super().prepare_value(raw_value=raw_value)
 
@@ -42,7 +41,7 @@ class PhpWorkdir(CodeBaseWorkdir):
 
         children.append(
             {
-                "class": PhpPackageComposerJsonFile,
+                "class": PhpComposerJsonFile,
                 "name": "composer.json",
                 "type": DiskItemType.FILE,
                 "should_exist": True,
