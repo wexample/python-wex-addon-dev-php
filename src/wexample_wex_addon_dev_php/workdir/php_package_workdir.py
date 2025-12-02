@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from wexample_helpers.helpers.string import string_to_pascal_case
 from wexample_wex_addon_app.workdir.framework_packages_suite_workdir import (
     FrameworkPackageSuiteWorkdir,
 )
-
 from wexample_wex_addon_dev_php.workdir.php_workdir import PhpWorkdir
 
 if TYPE_CHECKING:
@@ -28,3 +28,7 @@ class PhpPackageWorkdir(PhpWorkdir):
         )
 
         return PhpPackagesSuiteWorkdir
+
+    def get_package_import_name(self) -> str:
+        """Get the full package import name with vendor prefix."""
+        return f"{string_to_pascal_case(self.get_vendor_name())}\\{string_to_pascal_case(self.get_project_name())}"
