@@ -3,6 +3,11 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from wexample_helpers.helpers.string import string_to_pascal_case
+from wexample_helpers_git.helpers.git import (
+    git_tag_exists,
+    git_tag_annotated,
+    git_push_tag,
+)
 from wexample_wex_addon_app.workdir.framework_packages_suite_workdir import (
     FrameworkPackageSuiteWorkdir,
 )
@@ -32,3 +37,14 @@ class PhpPackageWorkdir(PhpWorkdir):
     def get_package_import_name(self) -> str:
         """Get the full package import name with vendor prefix."""
         return f"{string_to_pascal_case(self.get_vendor_name())}\\{string_to_pascal_case(self.get_project_name())}"
+
+    def _publish(self, force: bool = False) -> None:
+        """Add a Packagist-friendly tag (vX.Y.Z) in addition to default tagging."""
+        tag = f"v{self.get_project_version()}"
+        cwd = self.get_path()
+
+        if git_tag_exists(tag, cwd=cwd, inherit_stdio=False) and not force:
+            self.log(f"Tag {tag} already exists, skipping creation (use --force to re-tag).")
+        else:
+            git_tag_annotated(tag, f"Release {tag}", cwd=cwd, inherit_stdio=True)
+            git_push_tag(tag, cwd=cwd, inherit_stdio=True)
