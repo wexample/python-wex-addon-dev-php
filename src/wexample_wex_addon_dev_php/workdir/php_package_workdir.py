@@ -48,12 +48,7 @@ class PhpPackageWorkdir(PhpWorkdir):
             git_tag_annotated(tag, f"Release {tag}", cwd=cwd, inherit_stdio=True)
 
         # Uses git repo to deploy packages.
-        self.push_changes(
-            remote_name=self.search_app_or_suite_runtime_config(
-                "php.packagist.deployment_remote_name",
-                default=None
-            ).get_str_or_none()
-        )
+        self.push_to_deployment_remote()
 
     def get_package_name(self) -> str:
         from wexample_helpers.helpers.string import string_to_kebab_case
