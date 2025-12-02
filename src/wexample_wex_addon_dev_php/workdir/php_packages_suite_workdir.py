@@ -25,6 +25,3 @@ class PhpPackagesSuiteWorkdir(FrameworkPackageSuiteWorkdir):
         )
 
         return PhpPackageWorkdir
-
-    def packages_validate_internal_dependencies_declarations(self) -> None:
-        self.warning("PHP suite packages internal dependencies are not checked")
