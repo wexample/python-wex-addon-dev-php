@@ -46,11 +46,10 @@ class PhpComposerJsonFile(JsonFile):
         # Apply change
         deps[package_name] = constraint
 
-        # Sort alphabetically for deterministic output
-        deps = {k: deps[k] for k in sorted(deps.keys())}
+        config_updated = {}
+        config_updated[group_key] = deps
+        config.update_nested(data=config_updated)
 
-        # Write back into config
-        config.set(path=group_key, value=deps)
         self.write_config(config)
 
         return True
