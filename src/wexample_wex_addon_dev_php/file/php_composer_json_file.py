@@ -14,7 +14,13 @@ class PhpComposerJsonFile(JsonFile):
     def get_dependencies_versions(
         self, optional: bool = False, group: str = "dev"
     ) -> dict[str, str]:
-        return self.read_config().search(path="require").get_dict_or_default(default={})
+        # Default values is not well managed in nested config value, for now.
+        require = self.read_config().search(path="require")
+
+        if not require:
+            return {}
+
+        return require.to_dict()
 
     def dumps(self, content: dict | None = None) -> str:
         import json
