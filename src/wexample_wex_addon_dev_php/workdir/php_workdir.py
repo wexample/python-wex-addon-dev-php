@@ -6,10 +6,10 @@ from wexample_filestate_php.option.php.phpcs_fixer_option import PhpcsFixerOptio
 from wexample_wex_addon_app.workdir.code_base_workdir import CodeBaseWorkdir
 
 if TYPE_CHECKING:
+    from wexample_config.const.types import DictConfig
     from wexample_config.options_provider.abstract_options_provider import (
         AbstractOptionsProvider,
     )
-    from wexample_config.const.types import DictConfig
     from wexample_filestate.option.children_file_factory_option import (
         ChildrenFileFactoryOption,
     )
@@ -120,9 +120,7 @@ class PhpWorkdir(CodeBaseWorkdir):
             pattern={
                 "class": PhpFile,
                 "type": DiskItemType.FILE,
-                "php": [
-                    PhpcsFixerOption.get_name()
-                ],
+                "php": [PhpcsFixerOption.get_name()],
             },
             name_pattern=r"^.*\.php$",
             recursive=True,
