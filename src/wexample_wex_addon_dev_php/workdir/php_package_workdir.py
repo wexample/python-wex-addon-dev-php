@@ -47,4 +47,6 @@ class PhpPackageWorkdir(PhpWorkdir):
             self.log(f"Tag {tag} already exists, skipping creation (use --force to re-tag).")
         else:
             git_tag_annotated(tag, f"Release {tag}", cwd=cwd, inherit_stdio=True)
-            git_push_tag(tag, cwd=cwd, inherit_stdio=True)
+
+        # Uses git repo to deploy packages.
+        self.push_changes()
