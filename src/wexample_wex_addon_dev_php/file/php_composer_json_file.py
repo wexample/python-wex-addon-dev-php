@@ -23,7 +23,6 @@ class PhpComposerJsonFile(JsonFile):
         Add or update a Composer dependency.
         Returns True if the dependency list changed.
         """
-
         # Composer group
         group_key = "require-dev" if group == "dev" else "require"
 

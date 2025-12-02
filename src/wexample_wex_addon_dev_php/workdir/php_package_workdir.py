@@ -73,7 +73,9 @@ class PhpPackageWorkdir(PhpWorkdir):
         cwd = self.get_path()
 
         if git_tag_exists(tag, cwd=cwd, inherit_stdio=False) and not force:
-            self.log(f"Tag {tag} already exists, skipping creation (use --force to re-tag).")
+            self.log(
+                f"Tag {tag} already exists, skipping creation (use --force to re-tag)."
+            )
         else:
             git_tag_annotated(tag, f"Release {tag}", cwd=cwd, inherit_stdio=True)
 
