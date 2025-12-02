@@ -6,7 +6,6 @@ from wexample_helpers.helpers.string import string_to_pascal_case
 from wexample_helpers_git.helpers.git import (
     git_tag_exists,
     git_tag_annotated,
-    git_push_tag,
 )
 from wexample_wex_addon_app.workdir.framework_packages_suite_workdir import (
     FrameworkPackageSuiteWorkdir,
@@ -49,4 +48,9 @@ class PhpPackageWorkdir(PhpWorkdir):
             git_tag_annotated(tag, f"Release {tag}", cwd=cwd, inherit_stdio=True)
 
         # Uses git repo to deploy packages.
-        self.push_changes()
+        self.push_changes(
+            remote_name=self.search_app_or_suite_runtime_config(
+                "php.packagist.deployment_remote_name",
+                default=None
+            ).get_str_or_none()
+        )
