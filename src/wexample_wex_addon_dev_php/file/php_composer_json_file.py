@@ -1,18 +1,23 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from wexample_filestate.item.file.json_file import JsonFile
 from wexample_helpers.decorator.base_class import base_class
+
+if TYPE_CHECKING:
+    from wexample_wex_addon_app.workdir.code_base_workdir import CodeBaseWorkdir
 
 
 @base_class
 class PhpComposerJsonFile(JsonFile):
     def add_dependency(
-        self,
-        package_name: str,
-        version: str,
-        operator: str = "",
-        optional: bool = False,
-        group: None | str = None,
+            self,
+            package: CodeBaseWorkdir,
+            version: str,
+            operator: str = "",
+            optional: bool = False,
+            group: None | str = None,
     ) -> bool:
         """
         Add or update a Composer dependency.
@@ -20,6 +25,7 @@ class PhpComposerJsonFile(JsonFile):
         """
         # Composer group
         group_key = "require-dev" if group == "dev" else "require"
+        package_name = package.get_package_dependency_name()
 
         # Composer does not use operators like pip (==, >=, etc.)
         # So operator is simply prepended if provided.
@@ -49,7 +55,7 @@ class PhpComposerJsonFile(JsonFile):
         return True
 
     def get_dependencies_versions(
-        self, optional: bool = False, group: str = "dev"
+            self, optional: bool = False, group: str = "dev"
     ) -> dict[str, str]:
         # Default values is not well managed in nested config value, for now.
         require = self.read_config().search(path="require")
