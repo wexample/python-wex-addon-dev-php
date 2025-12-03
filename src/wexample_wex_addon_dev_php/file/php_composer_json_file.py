@@ -63,7 +63,7 @@ class PhpComposerJsonFile(JsonFile):
         if not require:
             return {}
 
-        return require.to_dict()
+        return require.get_dict_or_default()
 
     def dumps(self, content: dict | None = None) -> str:
         content = content or self.read_parsed()
