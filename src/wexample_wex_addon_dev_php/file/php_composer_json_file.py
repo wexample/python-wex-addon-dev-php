@@ -7,12 +7,12 @@ from wexample_helpers.decorator.base_class import base_class
 @base_class
 class PhpComposerJsonFile(JsonFile):
     def add_dependency(
-            self,
-            package_name: str,
-            version: str,
-            operator: str = "",
-            optional: bool = False,
-            group: None | str = None,
+        self,
+        package_name: str,
+        version: str,
+        operator: str = "",
+        optional: bool = False,
+        group: None | str = None,
     ) -> bool:
         """
         Add or update a Composer dependency.
@@ -49,7 +49,7 @@ class PhpComposerJsonFile(JsonFile):
         return True
 
     def get_dependencies_versions(
-            self, optional: bool = False, group: str = "dev"
+        self, optional: bool = False, group: str = "dev"
     ) -> dict[str, str]:
         # Default values is not well managed in nested config value, for now.
         require = self.read_config().search(path="require")

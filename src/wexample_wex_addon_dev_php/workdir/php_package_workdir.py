@@ -39,8 +39,8 @@ class PhpPackageWorkdir(PhpWorkdir):
         return f"{string_to_pascal_case(self.get_vendor_name())}\\{string_to_pascal_case(self.get_project_name())}"
 
     def search_imports_in_codebase(
-        self, searched_package: "PhpPackageWorkdir"
-    ) -> list["SearchResult"]:
+        self, searched_package: PhpPackageWorkdir
+    ) -> list[SearchResult]:
         """Find PHP `use`/qualified references to the given package."""
         import re
 
@@ -50,7 +50,7 @@ class PhpPackageWorkdir(PhpWorkdir):
 
     def search_in_codebase(
         self, string: str, *, regex: bool = False, flags: int = 0
-    ) -> list["SearchResult"]:
+    ) -> list[SearchResult]:
         from wexample_filestate.utils.search_result import SearchResult
         from wexample_filestate_php.file.php_file import PhpFile
 
