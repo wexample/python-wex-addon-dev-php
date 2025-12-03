@@ -60,9 +60,7 @@ class PhpComposerJsonFile(JsonFile):
         return require.to_dict()
 
     def dumps(self, content: dict | None = None) -> str:
-        import json
-
         content = content or self.read_parsed()
         content["version"] = self.get_parent_item().get_project_version()
 
-        return json.dumps(content or {}, ensure_ascii=False, indent=2)
+        return super().dumps(content or {})
