@@ -11,24 +11,22 @@ if TYPE_CHECKING:
 
 @base_class
 class PhpComposerJsonFile(JsonFile):
-    def add_dependency(
+    def add_dependency_from_string(
             self,
-            package: CodeBaseWorkdir,
+            package_name: str,
             version: str,
             operator: str = "",
             optional: bool = False,
             group: None | str = None,
     ) -> bool:
         """
-        Add or update a Composer dependency.
+        Add or update a Composer dependency using raw package name + version.
         Returns True if the dependency list changed.
         """
         # Composer group
         group_key = "require-dev" if group == "dev" else "require"
-        package_name = package.get_package_dependency_name()
 
-        # Composer does not use operators like pip (==, >=, etc.)
-        # So operator is simply prepended if provided.
+        # Composer uses simple version constraints (no pip-style operators)
         constraint = f"{operator}{version}".strip()
 
         config = self.read_config()
@@ -39,20 +37,18 @@ class PhpComposerJsonFile(JsonFile):
 
         old = deps.get(package_name)
 
-        # Nothing changes
+        # No change needed
         if old == constraint:
             return False
 
         # Apply change
         deps[package_name] = constraint
 
-        config_updated = {}
-        config_updated[group_key] = deps
-        config.update_nested(data=config_updated)
-
+        config.update_nested({group_key: deps})
         self.write_config(config)
 
         return True
+
 
     def get_dependencies_versions(
             self, optional: bool = False, group: str = "dev"
