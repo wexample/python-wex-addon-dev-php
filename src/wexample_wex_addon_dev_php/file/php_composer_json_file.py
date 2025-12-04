@@ -63,10 +63,13 @@ class PhpComposerJsonFile(JsonFile):
         if not require:
             return {}
 
-        return require.get_dict_or_default()
+        return require.get_dict_or_default(default={})
 
     def dumps(self, content: dict | None = None) -> str:
         content = content or self.read_parsed()
-        content["version"] = self.get_parent_item().get_project_version()
+
+        workdir = self.get_parent_item()
+        content["name"] = workdir.get_package_name()
+        content["version"] = workdir.get_project_version()
 
         return super().dumps(content or {})
