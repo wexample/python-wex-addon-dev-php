@@ -20,6 +20,11 @@ if TYPE_CHECKING:
 
 
 class PhpWorkdir(CodeBaseWorkdir):
+    def get_package_name(self) -> str:
+        from wexample_helpers.helpers.string import string_to_kebab_case
+
+        return f"{string_to_kebab_case(self.get_vendor_name())}/{string_to_kebab_case(self.get_project_name())}"
+
     def get_app_config_file(self, reload: bool = True) -> PhpComposerJsonFile:
         from wexample_wex_addon_dev_php.file.php_composer_json_file import (
             PhpComposerJsonFile,

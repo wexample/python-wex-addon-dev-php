@@ -81,8 +81,3 @@ class PhpPackageWorkdir(PhpWorkdir):
 
         # Uses git repo to deploy packages.
         self.push_to_deployment_remote()
-
-    def get_package_name(self) -> str:
-        from wexample_helpers.helpers.string import string_to_kebab_case
-
-        return f"{string_to_kebab_case(self.get_vendor_name())}/{string_to_kebab_case(self.get_project_name())}"
