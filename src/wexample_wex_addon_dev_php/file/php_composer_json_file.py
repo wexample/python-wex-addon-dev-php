@@ -7,6 +7,17 @@ from wexample_wex_addon_app.item.file.mixin.app_dependencies_config_file_mixin i
 
 @base_class
 class PhpComposerJsonFile(AppDependenciesConfigFileMixin, JsonFile):
+
+    def add_dependency(
+            self,
+            # In composer, no operator says ==
+            operator: str = "",
+            **kwargs
+    ) -> bool:
+        return super().add_dependency(
+            **kwargs
+        )
+
     def add_dependency_from_string(
             self,
             package_name: str,
