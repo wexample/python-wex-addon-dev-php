@@ -12,7 +12,8 @@ class SymfonyWorkdir(PhpWorkdir):
         self.log('Syncing Javascript...')
 
         workdir_javascript = JavascriptWorkdir.create_from_path(
-            path=self.get_path()
+            path=self.get_path(),
+            io=self.io
         )
 
         workdir_javascript.libraries_sync()
