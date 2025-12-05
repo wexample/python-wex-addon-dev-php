@@ -29,7 +29,6 @@ class SymfonyWorkdir(PhpWorkdir):
         )
 
         return workdir_javascript.apply(
+            result=result,
             **kwargs
         )
-
-        return result
