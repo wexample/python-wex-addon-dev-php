@@ -1,16 +1,12 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
 from wexample_filestate.item.file.json_file import JsonFile
 from wexample_helpers.decorator.base_class import base_class
-
-if TYPE_CHECKING:
-    from wexample_wex_addon_app.workdir.code_base_workdir import CodeBaseWorkdir
+from wexample_wex_addon_app.item.file.mixin.app_dependencies_config_file_mixin import AppDependenciesConfigFileMixin
 
 
 @base_class
-class PhpComposerJsonFile(JsonFile):
+class PhpComposerJsonFile(AppDependenciesConfigFileMixin, JsonFile):
     def add_dependency_from_string(
             self,
             package_name: str,
@@ -48,7 +44,6 @@ class PhpComposerJsonFile(JsonFile):
         self.write_config(config)
 
         return True
-
 
     def get_dependencies_versions(
             self, optional: bool = False, group: str = "dev"
