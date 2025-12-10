@@ -15,6 +15,7 @@ class PhpComposerJsonFile(AppDependenciesConfigFileMixin, JsonFile):
             **kwargs
     ) -> bool:
         return super().add_dependency(
+            operator=operator,
             **kwargs
         )
 
