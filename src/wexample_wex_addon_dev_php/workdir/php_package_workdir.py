@@ -72,10 +72,12 @@ class PhpPackageWorkdir(PhpWorkdir):
         tag = f"v{self.get_project_version()}"
         cwd = self.get_path()
 
-        if git_tag_exists(tag, cwd=cwd, inherit_stdio=False) and not force:
+        if git_tag_exists(tag, cwd=cwd, inherit_stdio=False):
             self.log(
                 f"Tag {tag} already exists, skipping creation."
             )
+        else:
+            git_tag_annotated(tag, f"Release {tag}", cwd=cwd, inherit_stdio=True)
 
         # Uses git repo to deploy packages.
         self.push_to_deployment_remote()
