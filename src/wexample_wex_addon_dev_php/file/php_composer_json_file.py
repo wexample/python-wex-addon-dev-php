@@ -2,11 +2,22 @@ from __future__ import annotations
 
 from wexample_filestate.item.file.json_file import JsonFile
 from wexample_helpers.decorator.base_class import base_class
+from wexample_wex_addon_app.item.file.mixin.app_dependencies_config_file_mixin import (
+    AppDependenciesConfigFileMixin,
+)
 
 
 @base_class
-class PhpComposerJsonFile(JsonFile):
+class PhpComposerJsonFile(AppDependenciesConfigFileMixin, JsonFile):
     def add_dependency(
+        self,
+        # In composer, no operator says ==
+        operator: str = "",
+        **kwargs,
+    ) -> bool:
+        return super().add_dependency(operator=operator, **kwargs)
+
+    def add_dependency_from_string(
         self,
         package_name: str,
         version: str,
@@ -15,14 +26,13 @@ class PhpComposerJsonFile(JsonFile):
         group: None | str = None,
     ) -> bool:
         """
-        Add or update a Composer dependency.
+        Add or update a Composer dependency using raw package name + version.
         Returns True if the dependency list changed.
         """
         # Composer group
         group_key = "require-dev" if group == "dev" else "require"
 
-        # Composer does not use operators like pip (==, >=, etc.)
-        # So operator is simply prepended if provided.
+        # Composer uses simple version constraints (no pip-style operators)
         constraint = f"{operator}{version}".strip()
 
         config = self.read_config()
@@ -33,20 +43,26 @@ class PhpComposerJsonFile(JsonFile):
 
         old = deps.get(package_name)
 
-        # Nothing changes
+        # No change needed
         if old == constraint:
             return False
 
         # Apply change
         deps[package_name] = constraint
 
-        config_updated = {}
-        config_updated[group_key] = deps
-        config.update_nested(data=config_updated)
-
+        config.update_nested({group_key: deps})
         self.write_config(config)
 
         return True
+
+    def dumps(self, content: dict | None = None) -> str:
+        content = content or self.read_parsed()
+
+        workdir = self.get_parent_item()
+        content["name"] = workdir.get_package_name()
+        content["version"] = workdir.get_project_version()
+
+        return super().dumps(content or {})
 
     def get_dependencies_versions(
         self, optional: bool = False, group: str = "dev"
@@ -57,10 +73,4 @@ class PhpComposerJsonFile(JsonFile):
         if not require:
             return {}
 
-        return require.to_dict()
-
-    def dumps(self, content: dict | None = None) -> str:
-        content = content or self.read_parsed()
-        content["version"] = self.get_parent_item().get_project_version()
-
-        return super().dumps(content or {})
+        return require.get_dict_or_default(default={})
