@@ -2,30 +2,28 @@ from __future__ import annotations
 
 from wexample_filestate.item.file.json_file import JsonFile
 from wexample_helpers.decorator.base_class import base_class
-from wexample_wex_addon_app.item.file.mixin.app_dependencies_config_file_mixin import AppDependenciesConfigFileMixin
+from wexample_wex_addon_app.item.file.mixin.app_dependencies_config_file_mixin import (
+    AppDependenciesConfigFileMixin,
+)
 
 
 @base_class
 class PhpComposerJsonFile(AppDependenciesConfigFileMixin, JsonFile):
-
     def add_dependency(
-            self,
-            # In composer, no operator says ==
-            operator: str = "",
-            **kwargs
+        self,
+        # In composer, no operator says ==
+        operator: str = "",
+        **kwargs,
     ) -> bool:
-        return super().add_dependency(
-            operator=operator,
-            **kwargs
-        )
+        return super().add_dependency(operator=operator, **kwargs)
 
     def add_dependency_from_string(
-            self,
-            package_name: str,
-            version: str,
-            operator: str = "",
-            optional: bool = False,
-            group: None | str = None,
+        self,
+        package_name: str,
+        version: str,
+        operator: str = "",
+        optional: bool = False,
+        group: None | str = None,
     ) -> bool:
         """
         Add or update a Composer dependency using raw package name + version.
@@ -57,17 +55,6 @@ class PhpComposerJsonFile(AppDependenciesConfigFileMixin, JsonFile):
 
         return True
 
-    def get_dependencies_versions(
-            self, optional: bool = False, group: str = "dev"
-    ) -> dict[str, str]:
-        # Default values is not well managed in nested config value, for now.
-        require = self.read_config().search(path="require")
-
-        if not require:
-            return {}
-
-        return require.get_dict_or_default(default={})
-
     def dumps(self, content: dict | None = None) -> str:
         content = content or self.read_parsed()
 
@@ -76,3 +63,14 @@ class PhpComposerJsonFile(AppDependenciesConfigFileMixin, JsonFile):
         content["version"] = workdir.get_project_version()
 
         return super().dumps(content or {})
+
+    def get_dependencies_versions(
+        self, optional: bool = False, group: str = "dev"
+    ) -> dict[str, str]:
+        # Default values is not well managed in nested config value, for now.
+        require = self.read_config().search(path="require")
+
+        if not require:
+            return {}
+
+        return require.get_dict_or_default(default={})
