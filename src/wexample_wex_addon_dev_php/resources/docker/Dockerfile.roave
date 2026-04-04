@@ -1,0 +1,22 @@
+FROM php:8.4-cli
+
+RUN apt-get update && apt-get install -y \
+    git \
+    unzip \
+    libicu-dev \
+    && rm -rf /var/lib/apt/lists/* \
+    && docker-php-ext-install bcmath intl
+
+RUN groupadd -g 1000 appuser && \
+    useradd -m -u 1000 -g 1000 -s /bin/bash appuser
+
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+USER appuser
+RUN composer global require roave/backward-compatibility-check
+
+ENV PATH="/home/appuser/.composer/vendor/bin:${PATH}"
+
+WORKDIR /var/www/html
+
+CMD ["tail", "-f", "/dev/null"]
