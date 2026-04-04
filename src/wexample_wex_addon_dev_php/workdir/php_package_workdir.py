@@ -36,20 +36,33 @@ class PhpPackageWorkdir(PhpWorkdir):
             return UPGRADE_TYPE_MINOR
 
         try:
-            self._ensure_roave_container()
             from wexample_helpers.helpers.docker import (
                 docker_build_name_from_path,
                 docker_exec,
             )
+            from wexample_helpers.helpers.shell import shell_run
+
+            git_root = shell_run(
+                ["git", "rev-parse", "--show-toplevel"],
+                cwd=self.get_path(),
+                capture=True,
+            ).stdout.strip()
+
+            package_rel = str(self.get_path().resolve().relative_to(git_root))
+
+            self._ensure_roave_container(git_root=git_root)
 
             container_name = docker_build_name_from_path(
-                root_path=self.get_path(),
+                root_path=git_root,
                 image_name=_ROAVE_IMAGE_NAME,
             )
             self.log(f"Running roave backward compatibility check from {last_tag}...")
             docker_exec(
                 container_name,
-                ["roave-backward-compatibility-check", f"--from={last_tag}"],
+                [
+                    "sh", "-c",
+                    f"cd /var/www/html/{package_rel} && roave-backward-compatibility-check --from={last_tag}",
+                ],
             )
             self.log("No breaking changes detected.")
             return UPGRADE_TYPE_INTERMEDIATE
@@ -57,7 +70,7 @@ class PhpPackageWorkdir(PhpWorkdir):
             self.log(f"Breaking changes detected: {e}")
             return UPGRADE_TYPE_MAJOR
 
-    def _ensure_roave_container(self) -> None:
+    def _ensure_roave_container(self, git_root: str) -> None:
         import os
         from pathlib import Path
 
@@ -75,7 +88,7 @@ class PhpPackageWorkdir(PhpWorkdir):
             Path(__file__).parent.parent / "resources" / "docker" / "Dockerfile.roave"
         )
         container_name = docker_build_name_from_path(
-            root_path=self.get_path(),
+            root_path=git_root,
             image_name=_ROAVE_IMAGE_NAME,
         )
 
@@ -97,7 +110,7 @@ class PhpPackageWorkdir(PhpWorkdir):
             docker_run_container(
                 container_name,
                 _ROAVE_IMAGE_NAME,
-                volumes={str(self.get_path()): "/var/www/html"},
+                volumes={git_root: "/var/www/html"},
                 user=user,
             )
             self.log(f"Container {container_name} created.")
