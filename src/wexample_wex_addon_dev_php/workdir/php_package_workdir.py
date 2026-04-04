@@ -10,6 +10,9 @@ from wexample_helpers_git.helpers.git import (
 from wexample_wex_addon_app.workdir.framework_packages_suite_workdir import (
     FrameworkPackageSuiteWorkdir,
 )
+from wexample_wex_addon_app.workdir.mixin.with_runner_workdir_mixin import (
+    WithRunnerWorkdirMixin,
+)
 
 from wexample_wex_addon_dev_php.workdir.php_workdir import PhpWorkdir
 
@@ -18,12 +21,36 @@ if TYPE_CHECKING:
         ReadmeContentConfigValue,
     )
     from wexample_filestate.utils.search_result import SearchResult
+    from wexample_runner.runner_config import RunnerConfig
 
 
-_ROAVE_IMAGE_NAME = "wex-php-roave"
+class PhpPackageWorkdir(WithRunnerWorkdirMixin, PhpWorkdir):
+    def get_runners(self) -> dict[str, RunnerConfig]:
+        from pathlib import Path
 
+        from wexample_helpers.helpers.shell import shell_run
+        from wexample_runner.runner_config import RunnerConfig
 
-class PhpPackageWorkdir(PhpWorkdir):
+        git_root = shell_run(
+            ["git", "rev-parse", "--show-toplevel"],
+            cwd=self.get_path(),
+            capture=True,
+        ).stdout.strip()
+
+        dockerfile_path = (
+            Path(__file__).parent.parent / "resources" / "docker" / "Dockerfile.roave"
+        )
+
+        return {
+            "roave": RunnerConfig(
+                dockerfile=dockerfile_path,
+                image_name="wex-php-roave",
+                mount_path=git_root,
+                container_workdir="/var/www/html",
+                ephemeral=False,
+            )
+        }
+
     def _classify_version_bump(self, last_tag: str) -> str:
         from wexample_helpers.const.types import (
             UPGRADE_TYPE_INTERMEDIATE,
@@ -36,84 +63,28 @@ class PhpPackageWorkdir(PhpWorkdir):
             return UPGRADE_TYPE_MINOR
 
         try:
-            from wexample_helpers.helpers.docker import (
-                docker_build_name_from_path,
-                docker_exec,
+            package_rel = str(
+                self.get_path().resolve().relative_to(
+                    self.get_runners()["roave"].mount_path
+                )
             )
-            from wexample_helpers.helpers.shell import shell_run
 
-            git_root = shell_run(
-                ["git", "rev-parse", "--show-toplevel"],
-                cwd=self.get_path(),
-                capture=True,
-            ).stdout.strip()
-
-            package_rel = str(self.get_path().resolve().relative_to(git_root))
-
-            self._ensure_roave_container(git_root=git_root)
-
-            container_name = docker_build_name_from_path(
-                root_path=git_root,
-                image_name=_ROAVE_IMAGE_NAME,
-            )
             self.log(f"Running roave backward compatibility check from {last_tag}...")
-            docker_exec(
-                container_name,
-                [
-                    "sh", "-c",
-                    f"cd /var/www/html/{package_rel} && roave-backward-compatibility-check --from={last_tag}",
-                ],
+            result = self.runner_exec(
+                "roave",
+                f"cd /var/www/html/{package_rel} && roave-backward-compatibility-check --from={last_tag}",
             )
-            self.log("No breaking changes detected.")
-            return UPGRADE_TYPE_INTERMEDIATE
+
+            if result.is_success():
+                self.log("No breaking changes detected.")
+                return UPGRADE_TYPE_INTERMEDIATE
+            else:
+                self.log(f"Breaking changes detected.")
+                return UPGRADE_TYPE_MAJOR
+
         except Exception as e:
             self.log(f"Breaking changes detected: {e}")
             return UPGRADE_TYPE_MAJOR
-
-    def _ensure_roave_container(self, git_root: str) -> None:
-        import os
-        from pathlib import Path
-
-        from wexample_helpers.helpers.docker import (
-            docker_build_image,
-            docker_build_name_from_path,
-            docker_container_exists,
-            docker_container_is_running,
-            docker_image_exists,
-            docker_run_container,
-            docker_start_container,
-        )
-
-        dockerfile_path = (
-            Path(__file__).parent.parent / "resources" / "docker" / "Dockerfile.roave"
-        )
-        container_name = docker_build_name_from_path(
-            root_path=git_root,
-            image_name=_ROAVE_IMAGE_NAME,
-        )
-
-        if not docker_image_exists(_ROAVE_IMAGE_NAME):
-            self.log(f"Building Docker image {_ROAVE_IMAGE_NAME}...")
-            docker_build_image(_ROAVE_IMAGE_NAME, dockerfile_path)
-            self.log(f"Docker image {_ROAVE_IMAGE_NAME} ready.")
-
-        if docker_container_exists(container_name):
-            if not docker_container_is_running(container_name):
-                self.log(f"Starting container {container_name}...")
-                docker_start_container(container_name)
-                self.log(f"Container {container_name} started.")
-            else:
-                self.log(f"Container {container_name} already running.")
-        else:
-            self.log(f"Creating container {container_name}...")
-            user = f"{os.getuid()}:{os.getgid()}"
-            docker_run_container(
-                container_name,
-                _ROAVE_IMAGE_NAME,
-                volumes={git_root: "/var/www/html"},
-                user=user,
-            )
-            self.log(f"Container {container_name} created.")
 
     def _get_critical_directories(self) -> list[str]:
         return ["src"]
