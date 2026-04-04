@@ -21,6 +21,9 @@ if TYPE_CHECKING:
 
 
 class PhpPackageWorkdir(PhpWorkdir):
+    def _get_critical_directories(self) -> list[str]:
+        return ["src"]
+
     def get_package_import_name(self) -> str:
         """Get the full package import name with vendor prefix."""
         return f"{string_to_pascal_case(self.get_vendor_name())}\\{string_to_pascal_case(self.get_project_name())}"
