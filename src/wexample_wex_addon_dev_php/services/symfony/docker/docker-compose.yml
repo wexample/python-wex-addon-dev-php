@@ -4,5 +4,6 @@ services:
     image: wexample/php-8.2:latest
     expose:
       - 80
-    networks:
-      - wex_net
+    extends:
+      file: ${SERVICE_DEFAULT_COMPOSE}
+      service: default
