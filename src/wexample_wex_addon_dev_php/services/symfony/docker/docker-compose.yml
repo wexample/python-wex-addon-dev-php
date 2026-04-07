@@ -1,6 +1,6 @@
 services:
   symfony:
-    container_name: ${APP_NAME}_symfony
+    container_name: ${APP_PROJECT_NAME}_symfony
     image: wexample/php-8.2:latest
     expose:
       - 80
