@@ -1,0 +1,6 @@
+name: symfony
+tags:
+  - php
+  - web
+docker:
+  compose: docker/docker-compose.yml

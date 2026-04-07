@@ -1,0 +1,9 @@
+services:
+  symfony:
+    # v6: todo — migration: RUNTIME_NAME → APP_PROJECT
+    container_name: ${RUNTIME_NAME}_symfony
+    image: wexample/php-8.2:latest
+    expose:
+      - 80
+    networks:
+      - wex_net

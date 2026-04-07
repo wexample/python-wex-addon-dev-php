@@ -1,0 +1,6 @@
+name: phpmyadmin
+tags:
+  - php
+  - db-ui
+docker:
+  compose: docker/docker-compose.yml

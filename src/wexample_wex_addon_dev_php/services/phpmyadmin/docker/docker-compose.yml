@@ -1,0 +1,10 @@
+services:
+  phpmyadmin:
+    # v6: todo — migration: RUNTIME_NAME → APP_PROJECT, RUNTIME_PATH_APP_ENV → APP_SETUP_PATH
+    container_name: ${RUNTIME_NAME}_phpmyadmin
+    image: phpmyadmin/phpmyadmin:5.2
+    environment:
+      - PMA_HOST=${SERVICE_PHPMYADMIN_HOST}
+      - PMA_PORT=${SERVICE_PHPMYADMIN_PORT}
+    networks:
+      - wex_net
