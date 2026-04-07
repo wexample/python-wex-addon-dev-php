@@ -7,3 +7,5 @@ docker:
 runtime:
   bind:
     web_php_ini: php/web.ini
+    web_apache_conf: apache/web.conf
+    mpm_prefork_apache_conf: apache/mpm_prefork.conf
