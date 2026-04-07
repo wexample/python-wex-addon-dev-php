@@ -5,7 +5,7 @@ services:
     expose:
       - 80
     environment:
-      - VIRTUAL_HOST=${APP_DOMAIN_MAIN}
+      - VIRTUAL_HOST=${APP_DOMAINS_STRING}
     extends:
       file: ${SERVICE_DEFAULT_COMPOSE}
       service: default
