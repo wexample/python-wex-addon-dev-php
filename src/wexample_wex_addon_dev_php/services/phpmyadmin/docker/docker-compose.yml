@@ -1,6 +1,6 @@
 services:
   phpmyadmin:
-    container_name: ${APP_NAME}_phpmyadmin
+    container_name: ${APP_PROJECT_NAME}_phpmyadmin
     image: phpmyadmin/phpmyadmin:5.2
     environment:
       - PMA_HOST=${SERVICE_MYSQL_HOST}
