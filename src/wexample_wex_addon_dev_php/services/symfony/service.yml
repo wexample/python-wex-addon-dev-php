@@ -4,3 +4,6 @@ tags:
   - web
 docker:
   compose: docker/docker-compose.yml
+runtime:
+  bind:
+    web_php_ini: php/web.ini
