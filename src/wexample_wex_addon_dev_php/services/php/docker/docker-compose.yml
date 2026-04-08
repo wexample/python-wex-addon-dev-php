@@ -13,7 +13,7 @@ services:
       - ${APP_PATH}:/var/www/html
       - ${BIND_WEB_PHP_INI}:/usr/local/etc/php/conf.d/web.ini:ro
       - ${BIND_WEB_APACHE_CONF}:/etc/apache2/sites-enabled/000-default.conf:ro
-      - ${APP_SETUP_PATH}env/${APP_ENV}/cron/local:/var/default.cron
+      - ${APP_SETUP_PATH}env/${APP_ENV}/cron/default.cron:/var/default.cron
     extends:
       file: ${SERVICE_DEFAULT_COMPOSE}
       service: default
