@@ -1,0 +1,5 @@
+services:
+  laravel:
+    extends:
+      file: ${SERVICE_LARAVEL_COMPOSE}
+      service: laravel
