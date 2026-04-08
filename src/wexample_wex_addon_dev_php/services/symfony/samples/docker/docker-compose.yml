@@ -1,0 +1,5 @@
+services:
+  symfony:
+    extends:
+      file: ${SERVICE_SYMFONY_COMPOSE}
+      service: symfony

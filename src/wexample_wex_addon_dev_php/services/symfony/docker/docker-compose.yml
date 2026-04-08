@@ -1,9 +1,7 @@
 services:
   symfony:
     container_name: ${APP_PROJECT_NAME}_symfony
-    image: wexample/php-8.2:latest
-    expose:
-      - 80
+    image: gitlab-docker.wexample.com/wexample-public/docker/symfony:6.2
     extends:
-      file: ${SERVICE_DEFAULT_COMPOSE}
-      service: default
+      file: ${SERVICE_PHP_COMPOSE}
+      service: php
