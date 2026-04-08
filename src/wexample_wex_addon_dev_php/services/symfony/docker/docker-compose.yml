@@ -4,8 +4,6 @@ services:
     image: wexample/php-8.2:latest
     expose:
       - 80
-    environment:
-      - VIRTUAL_HOST=${APP_DOMAINS_STRING}
     extends:
       file: ${SERVICE_DEFAULT_COMPOSE}
       service: default
