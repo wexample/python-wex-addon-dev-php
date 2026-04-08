@@ -1,0 +1,5 @@
+services:
+  phpmyadmin:
+    environment:
+      - PMA_USER=${SERVICE_MYSQL_USER}
+      - PMA_PASSWORD=${SERVICE_MYSQL_PASSWORD}
