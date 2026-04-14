@@ -1,6 +1,6 @@
 # wex_addon_dev_php
 
-Version: 0.1.0
+Version: 0.1.1
 
 Python dev addon for wex
 
@@ -82,7 +82,7 @@ Visit the [Wexample Suite documentation](https://docs.wexample.com) for the comp
 - attrs: >=23.1.0
 - cattrs: >=23.1.0
 - wexample-filestate-php: >=0.1.0
-- wexample-wex-addon-app: >=1.0.0
+- wexample-wex-addon-app: >=1.1.0
 - wexample-wex-addon-dev-javascript: >=0.1.0
 
 ## Versioning & Compatibility Policy
