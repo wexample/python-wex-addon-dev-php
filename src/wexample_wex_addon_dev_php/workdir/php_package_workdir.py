@@ -25,6 +25,10 @@ if TYPE_CHECKING:
 
 
 class PhpPackageWorkdir(WithRunnerWorkdirMixin, PhpWorkdir):
+    def get_package_import_name(self) -> str:
+        """Get the full package import name with vendor prefix."""
+        return f"{string_to_pascal_case(self.get_vendor_name())}\\{string_to_pascal_case(self.get_project_name())}"
+
     def get_runners(self) -> dict[str, RunnerConfig]:
         from pathlib import Path
 
@@ -50,48 +54,6 @@ class PhpPackageWorkdir(WithRunnerWorkdirMixin, PhpWorkdir):
                 ephemeral=False,
             )
         }
-
-    def _classify_version_bump(self, last_tag: str) -> str:
-        from wexample_helpers.const.types import (
-            UPGRADE_TYPE_INTERMEDIATE,
-            UPGRADE_TYPE_MAJOR,
-            UPGRADE_TYPE_MINOR,
-        )
-        from wexample_helpers_git.helpers.git import git_has_changes_since_tag
-
-        if not git_has_changes_since_tag(last_tag, "src", cwd=self.get_path()):
-            return UPGRADE_TYPE_MINOR
-
-        try:
-            package_rel = str(
-                self.get_path().resolve().relative_to(
-                    self.get_runners()["roave"].mount_path
-                )
-            )
-
-            self.log(f"Running roave backward compatibility check from {last_tag}...")
-            result = self.runner_exec(
-                "roave",
-                f"cd /var/www/html/{package_rel} && roave-backward-compatibility-check --from={last_tag}",
-            )
-
-            if result.is_success():
-                self.log("No breaking changes detected.")
-                return UPGRADE_TYPE_INTERMEDIATE
-            else:
-                self.log(f"Breaking changes detected.")
-                return UPGRADE_TYPE_MAJOR
-
-        except Exception as e:
-            self.log(f"Breaking changes detected: {e}")
-            return UPGRADE_TYPE_MAJOR
-
-    def _get_critical_directories(self) -> list[str]:
-        return ["src"]
-
-    def get_package_import_name(self) -> str:
-        """Get the full package import name with vendor prefix."""
-        return f"{string_to_pascal_case(self.get_vendor_name())}\\{string_to_pascal_case(self.get_project_name())}"
 
     def search_imports_in_codebase(
         self, searched_package: PhpPackageWorkdir
@@ -121,6 +83,44 @@ class PhpPackageWorkdir(WithRunnerWorkdirMixin, PhpWorkdir):
         self.for_each_child_of_type_recursive(callback=_search, class_type=PhpFile)
 
         return found
+
+    def _classify_version_bump(self, last_tag: str) -> str:
+        from wexample_helpers.const.types import (
+            UPGRADE_TYPE_INTERMEDIATE,
+            UPGRADE_TYPE_MAJOR,
+            UPGRADE_TYPE_MINOR,
+        )
+        from wexample_helpers_git.helpers.git import git_has_changes_since_tag
+
+        if not git_has_changes_since_tag(last_tag, "src", cwd=self.get_path()):
+            return UPGRADE_TYPE_MINOR
+
+        try:
+            package_rel = str(
+                self.get_path()
+                .resolve()
+                .relative_to(self.get_runners()["roave"].mount_path)
+            )
+
+            self.log(f"Running roave backward compatibility check from {last_tag}...")
+            result = self.runner_exec(
+                "roave",
+                f"cd /var/www/html/{package_rel} && roave-backward-compatibility-check --from={last_tag}",
+            )
+
+            if result.is_success():
+                self.log("No breaking changes detected.")
+                return UPGRADE_TYPE_INTERMEDIATE
+            else:
+                self.log(f"Breaking changes detected.")
+                return UPGRADE_TYPE_MAJOR
+
+        except Exception as e:
+            self.log(f"Breaking changes detected: {e}")
+            return UPGRADE_TYPE_MAJOR
+
+    def _get_critical_directories(self) -> list[str]:
+        return ["src"]
 
     def _get_readme_content(self) -> ReadmeContentConfigValue | None:
         from wexample_wex_addon_dev_php.config_value.php_package_readme_config_value import (

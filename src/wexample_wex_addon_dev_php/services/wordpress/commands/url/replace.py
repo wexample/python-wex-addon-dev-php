@@ -8,27 +8,8 @@ from wexample_wex_core.decorator.option import option
 
 if TYPE_CHECKING:
     from wexample_app.response.abstract_response import AbstractResponse
-    from wexample_wex_core.context.execution_context import ExecutionContext
-
     from wexample_wex_addon_app.service.app_service import AppService
-
-
-def _normalize_url(url: str) -> str:
-    return url.rstrip("/")
-
-
-def _guess_new_url(service: AppService) -> str:
-    runtime = service.app_workdir.get_runtime_config()
-    domains = runtime.search("app.domains").get_list_or_default([])
-    if domains:
-        first = domains[0].get_str()
-        return _normalize_url(f"https://{first}")
-
-    domain = runtime.search("app.domain").get_str_or_none()
-    if domain:
-        return _normalize_url(f"https://{domain}")
-
-    raise RuntimeError("Unable to guess the new WordPress URL from runtime app domains")
+    from wexample_wex_core.context.execution_context import ExecutionContext
 
 
 @option(
@@ -53,7 +34,9 @@ def _guess_new_url(service: AppService) -> str:
     required=False,
     description="Do not ask for confirmation",
 )
-@command(type=COMMAND_TYPE_SERVICE, description="Replace the WordPress site URL using wp-cli")
+@command(
+    type=COMMAND_TYPE_SERVICE, description="Replace the WordPress site URL using wp-cli"
+)
 def wordpress__url__replace(
     context: ExecutionContext,
     service: AppService,
@@ -61,9 +44,9 @@ def wordpress__url__replace(
     old_url: str | None = None,
     yes: bool = False,
 ) -> AbstractResponse:
-    import click
     import subprocess
 
+    import click
     from wexample_app.response.shell_command_response import ShellCommandResponse
 
     runtime = service.app_workdir.get_runtime_config()
@@ -79,7 +62,9 @@ def wordpress__url__replace(
             text=True,
         )
         if detect.returncode != 0:
-            raise RuntimeError(f"Unable to detect current WordPress URL:\n{detect.stderr}")
+            raise RuntimeError(
+                f"Unable to detect current WordPress URL:\n{detect.stderr}"
+            )
         source_url = _normalize_url(detect.stdout.strip())
     else:
         source_url = _normalize_url(old_url)
@@ -107,3 +92,21 @@ def wordpress__url__replace(
             "--skip-columns=guid",
         ],
     )
+
+
+def _guess_new_url(service: AppService) -> str:
+    runtime = service.app_workdir.get_runtime_config()
+    domains = runtime.search("app.domains").get_list_or_default([])
+    if domains:
+        first = domains[0].get_str()
+        return _normalize_url(f"https://{first}")
+
+    domain = runtime.search("app.domain").get_str_or_none()
+    if domain:
+        return _normalize_url(f"https://{domain}")
+
+    raise RuntimeError("Unable to guess the new WordPress URL from runtime app domains")
+
+
+def _normalize_url(url: str) -> str:
+    return url.rstrip("/")
