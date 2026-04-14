@@ -1,0 +1,6 @@
+name: wordpress
+dependencies:
+  - mysql
+  - proxy
+docker:
+  compose: docker/docker-compose.yml

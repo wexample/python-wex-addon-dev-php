@@ -1,0 +1,4 @@
+services:
+  php:
+    environment:
+      - LETSENCRYPT_HOST=${APP_DOMAINS_STRING}

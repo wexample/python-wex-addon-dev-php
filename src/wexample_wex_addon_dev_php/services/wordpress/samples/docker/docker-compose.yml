@@ -1,0 +1,5 @@
+services:
+  wordpress:
+    extends:
+      file: ${SERVICE_WORDPRESS_COMPOSE}
+      service: wordpress

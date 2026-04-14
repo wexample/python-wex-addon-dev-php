@@ -1,0 +1,5 @@
+services:
+  wordpress_cli:
+    extends:
+      file: ${SERVICE_WORDPRESS_COMPOSE}
+      service: wordpress_cli

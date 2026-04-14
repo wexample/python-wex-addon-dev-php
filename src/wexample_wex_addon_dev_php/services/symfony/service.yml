@@ -1,0 +1,6 @@
+name: symfony
+extends: php
+dependencies:
+  - mysql
+docker:
+  compose: docker/docker-compose.yml

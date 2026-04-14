@@ -1,0 +1,5 @@
+services:
+  php:
+    extends:
+      file: ${SERVICE_PHP_COMPOSE}
+      service: php

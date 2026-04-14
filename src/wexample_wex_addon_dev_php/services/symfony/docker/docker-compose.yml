@@ -1,0 +1,7 @@
+services:
+  symfony:
+    container_name: ${APP_PROJECT_NAME}_symfony
+    image: gitlab-docker.wexample.com/wexample-public/docker/symfony:6.2
+    extends:
+      file: ${SERVICE_PHP_COMPOSE}
+      service: php

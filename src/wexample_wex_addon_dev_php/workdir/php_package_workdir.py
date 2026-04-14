@@ -10,6 +10,9 @@ from wexample_helpers_git.helpers.git import (
 from wexample_wex_addon_app.workdir.framework_packages_suite_workdir import (
     FrameworkPackageSuiteWorkdir,
 )
+from wexample_wex_addon_app.workdir.mixin.with_runner_workdir_mixin import (
+    WithRunnerWorkdirMixin,
+)
 
 from wexample_wex_addon_dev_php.workdir.php_workdir import PhpWorkdir
 
@@ -18,12 +21,39 @@ if TYPE_CHECKING:
         ReadmeContentConfigValue,
     )
     from wexample_filestate.utils.search_result import SearchResult
+    from wexample_runner.runner_config import RunnerConfig
 
 
-class PhpPackageWorkdir(PhpWorkdir):
+class PhpPackageWorkdir(WithRunnerWorkdirMixin, PhpWorkdir):
     def get_package_import_name(self) -> str:
         """Get the full package import name with vendor prefix."""
         return f"{string_to_pascal_case(self.get_vendor_name())}\\{string_to_pascal_case(self.get_project_name())}"
+
+    def get_runners(self) -> dict[str, RunnerConfig]:
+        from pathlib import Path
+
+        from wexample_helpers.helpers.shell import shell_run
+        from wexample_runner.runner_config import RunnerConfig
+
+        git_root = shell_run(
+            ["git", "rev-parse", "--show-toplevel"],
+            cwd=self.get_path(),
+            capture=True,
+        ).stdout.strip()
+
+        dockerfile_path = (
+            Path(__file__).parent.parent / "resources" / "docker" / "Dockerfile.roave"
+        )
+
+        return {
+            "roave": RunnerConfig(
+                dockerfile=dockerfile_path,
+                image_name="wex-php-roave",
+                mount_path=git_root,
+                container_workdir="/var/www/html",
+                ephemeral=False,
+            )
+        }
 
     def search_imports_in_codebase(
         self, searched_package: PhpPackageWorkdir
@@ -54,6 +84,44 @@ class PhpPackageWorkdir(PhpWorkdir):
 
         return found
 
+    def _classify_version_bump(self, last_tag: str) -> str:
+        from wexample_helpers.const.types import (
+            UPGRADE_TYPE_INTERMEDIATE,
+            UPGRADE_TYPE_MAJOR,
+            UPGRADE_TYPE_MINOR,
+        )
+        from wexample_helpers_git.helpers.git import git_has_changes_since_tag
+
+        if not git_has_changes_since_tag(last_tag, "src", cwd=self.get_path()):
+            return UPGRADE_TYPE_MINOR
+
+        try:
+            package_rel = str(
+                self.get_path()
+                .resolve()
+                .relative_to(self.get_runners()["roave"].mount_path)
+            )
+
+            self.log(f"Running roave backward compatibility check from {last_tag}...")
+            result = self.runner_exec(
+                "roave",
+                f"cd /var/www/html/{package_rel} && roave-backward-compatibility-check --from={last_tag}",
+            )
+
+            if result.is_success():
+                self.log("No breaking changes detected.")
+                return UPGRADE_TYPE_INTERMEDIATE
+            else:
+                self.log(f"Breaking changes detected.")
+                return UPGRADE_TYPE_MAJOR
+
+        except Exception as e:
+            self.log(f"Breaking changes detected: {e}")
+            return UPGRADE_TYPE_MAJOR
+
+    def _get_critical_directories(self) -> list[str]:
+        return ["src"]
+
     def _get_readme_content(self) -> ReadmeContentConfigValue | None:
         from wexample_wex_addon_dev_php.config_value.php_package_readme_config_value import (
             PhpPackageReadmeContentConfigValue,
@@ -61,7 +129,7 @@ class PhpPackageWorkdir(PhpWorkdir):
 
         return PhpPackageReadmeContentConfigValue(workdir=self)
 
-    def _get_suite_package_workdir_class(self) -> type[FrameworkPackageSuiteWorkdir]:
+    def _get_suite_workdir_class(self) -> type[FrameworkPackageSuiteWorkdir]:
         from wexample_wex_addon_dev_php.workdir.php_packages_suite_workdir import (
             PhpPackagesSuiteWorkdir,
         )
