@@ -2,8 +2,6 @@ services:
   php:
     container_name: ${APP_PROJECT_NAME}_php
     image: wexample/php-8.2:latest
-    expose:
-      - 80
     environment:
       - VIRTUAL_HOST=${APP_DOMAINS_STRING}
       - VIRTUAL_PORT=80
