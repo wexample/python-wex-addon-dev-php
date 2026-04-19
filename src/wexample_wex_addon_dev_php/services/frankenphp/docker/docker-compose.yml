@@ -1,7 +1,7 @@
 services:
   frankenphp:
     container_name: ${APP_PROJECT_NAME}_frankenphp
-    image: dunglas/frankenphp:php8.3
+    image: dunglas/frankenphp:php8.4
     environment:
       - VIRTUAL_HOST=${APP_DOMAINS_STRING}
       - VIRTUAL_PORT=80
