@@ -1,0 +1,5 @@
+services:
+  frankenphp:
+    extends:
+      file: ${SERVICE_FRANKENPHP_COMPOSE}
+      service: frankenphp

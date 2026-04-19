@@ -1,0 +1,12 @@
+name: frankenphp
+tags:
+  - php
+  - web
+docker:
+  compose: docker/docker-compose.yml
+runtime:
+  bind:
+    caddyfile: caddy/Caddyfile
+    web_php_ini: php/web.ini
+config:
+  proxy: true
