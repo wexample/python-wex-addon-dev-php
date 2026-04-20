@@ -1,4 +1,6 @@
-name: symfony
-extends: php
+name: composer
+tags:
+  - php
+  - composer
 docker:
   compose: docker/docker-compose.yml

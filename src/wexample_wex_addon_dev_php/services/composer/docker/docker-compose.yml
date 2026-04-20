@@ -1,0 +1,13 @@
+services:
+  composer:
+    container_name: ${APP_PROJECT_NAME}_composer
+    image: composer:latest
+    working_dir: /var/www/html
+    command: tail -f /dev/null
+    environment:
+      COMPOSER_ALLOW_SUPERUSER: "1"
+    volumes:
+      - ${APP_PATH}:/var/www/html
+    extends:
+      file: ${SERVICE_DEFAULT_COMPOSE}
+      service: default

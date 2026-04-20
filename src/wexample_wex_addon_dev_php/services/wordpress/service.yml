@@ -1,6 +1,7 @@
 name: wordpress
 dependencies:
-  - mysql
-  - proxy
+- mysql
 docker:
   compose: docker/docker-compose.yml
+config:
+  proxy: true
