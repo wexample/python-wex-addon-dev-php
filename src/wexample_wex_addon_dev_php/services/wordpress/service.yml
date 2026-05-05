@@ -1,7 +1,9 @@
 name: wordpress
 dependencies:
-- mysql
+  - mysql
 docker:
   compose: docker/docker-compose.yml
 config:
   proxy: true
+install_config:
+  "service.{{ name }}.db_prefix": "wp_"
