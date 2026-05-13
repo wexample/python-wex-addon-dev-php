@@ -138,7 +138,7 @@ class PhpPackageWorkdir(WithRunnerWorkdirMixin, PhpWorkdir):
 
     def _publish(self, force: bool = False) -> None:
         """Add a Packagist-friendly tag (vX.Y.Z) in addition to default tagging."""
-        tag = f"v{self.get_project_version()}"
+        tag = f"v{self.get_setup_version()}"
         cwd = self.get_path()
 
         if git_tag_exists(tag, cwd=cwd, inherit_stdio=False):
