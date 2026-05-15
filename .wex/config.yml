@@ -4,4 +4,4 @@ domains: []
 global:
   name: wex_addon_dev_php
   type: app
-  version: 8.0.2
+  version: 8.1.0
