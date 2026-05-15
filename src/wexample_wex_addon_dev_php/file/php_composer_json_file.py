@@ -60,7 +60,7 @@ class PhpComposerJsonFile(AppDependenciesConfigFileMixin, JsonFile):
 
         workdir = self.get_parent_item()
         content["name"] = workdir.get_package_name()
-        content["version"] = workdir.get_project_version()
+        content["version"] = workdir.get_setup_version()
 
         return super().dumps(content or {})
 
