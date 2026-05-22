@@ -73,4 +73,6 @@ class PhpComposerJsonFile(AppDependenciesConfigFileMixin, JsonFile):
         if not require:
             return {}
 
-        return require.get_dict_or_default(default={})
+        # Use to_dict_or_none() (not get_dict_or_default) so nested ConfigValue
+        # wrappers are unwrapped to native str — matches the dict[str, str] signature.
+        return require.to_dict_or_none() or {}
