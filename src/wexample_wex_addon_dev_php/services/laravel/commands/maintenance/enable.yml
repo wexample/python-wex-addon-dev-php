@@ -1,0 +1,10 @@
+description: Enable Laravel maintenance mode (php artisan down)
+decorators:
+  - name: attach
+    args:
+      position: after
+      command: app::maintenance/enable
+scripts:
+  - runner: docker
+    service: laravel
+    script: php artisan down

@@ -1,0 +1,10 @@
+description: Run Laravel database migrations (php artisan migrate)
+decorators:
+  - name: attach
+    args:
+      position: before
+      command: app::maintenance/disable
+scripts:
+  - runner: docker
+    service: laravel
+    script: php artisan migrate --force --no-interaction -vvv
