@@ -1,0 +1,10 @@
+description: Disable Laravel maintenance mode (php artisan up)
+decorators:
+  - name: attach
+    args:
+      position: after
+      command: app::maintenance/disable
+scripts:
+  - runner: docker
+    service: laravel
+    script: php artisan up
