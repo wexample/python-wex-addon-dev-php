@@ -7,4 +7,5 @@ decorators:
 scripts:
   - runner: docker
     service: laravel
+    shell: sh
     script: php artisan migrate --force --no-interaction -vvv
