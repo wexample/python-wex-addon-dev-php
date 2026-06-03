@@ -9,3 +9,4 @@ scripts:
     service: laravel
     shell: sh
     script: php artisan up
+    app_should_run: true
