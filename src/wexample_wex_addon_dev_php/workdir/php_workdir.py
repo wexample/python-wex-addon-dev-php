@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from wexample_filestate_php.option.php.phpcs_fixer_option import PhpcsFixerOption
+from wexample_helpers.decorator.base_class import base_class
 from wexample_wex_addon_ai.workdir.mixin.with_ai_workdir_mixin import (
     WithAiWorkdirMixin,
 )
@@ -22,7 +23,8 @@ if TYPE_CHECKING:
     )
 
 
-class PhpWorkdir(CodeBaseWorkdir, WithAiWorkdirMixin):
+@base_class
+class PhpWorkdir(WithAiWorkdirMixin, CodeBaseWorkdir):
     def get_app_config_file(self, reload: bool = True) -> PhpComposerJsonFile:
         from wexample_wex_addon_dev_php.file.php_composer_json_file import (
             PhpComposerJsonFile,

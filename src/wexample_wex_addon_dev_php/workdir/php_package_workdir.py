@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from wexample_helpers.decorator.base_class import base_class
 from wexample_helpers.helpers.string import string_to_pascal_case
 from wexample_helpers_git.helpers.git import (
     git_tag_annotated,
@@ -24,6 +25,7 @@ if TYPE_CHECKING:
     from wexample_runner.runner_config import RunnerConfig
 
 
+@base_class
 class PhpPackageWorkdir(WithRunnerWorkdirMixin, PhpWorkdir):
     def get_package_import_name(self) -> str:
         """Get the full package import name with vendor prefix."""
