@@ -3,6 +3,9 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from wexample_filestate_php.option.php.phpcs_fixer_option import PhpcsFixerOption
+from wexample_wex_addon_ai.workdir.mixin.with_ai_workdir_mixin import (
+    WithAiWorkdirMixin,
+)
 from wexample_wex_addon_app.workdir.code_base_workdir import CodeBaseWorkdir
 
 if TYPE_CHECKING:
@@ -19,7 +22,7 @@ if TYPE_CHECKING:
     )
 
 
-class PhpWorkdir(CodeBaseWorkdir):
+class PhpWorkdir(WithAiWorkdirMixin, CodeBaseWorkdir):
     def get_app_config_file(self, reload: bool = True) -> PhpComposerJsonFile:
         from wexample_wex_addon_dev_php.file.php_composer_json_file import (
             PhpComposerJsonFile,
@@ -67,6 +70,8 @@ class PhpWorkdir(CodeBaseWorkdir):
         )
 
         raw_value = super().prepare_value(raw_value=raw_value)
+
+        self.append_agents(config=raw_value)
 
         # Ensure a composer.json file exists for any PHP package project
         children = raw_value["children"]
