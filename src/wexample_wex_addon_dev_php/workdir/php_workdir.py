@@ -22,7 +22,7 @@ if TYPE_CHECKING:
     )
 
 
-class PhpWorkdir(WithAiWorkdirMixin, CodeBaseWorkdir):
+class PhpWorkdir(CodeBaseWorkdir, WithAiWorkdirMixin):
     def get_app_config_file(self, reload: bool = True) -> PhpComposerJsonFile:
         from wexample_wex_addon_dev_php.file.php_composer_json_file import (
             PhpComposerJsonFile,
