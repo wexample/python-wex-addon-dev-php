@@ -1,5 +1,14 @@
 description: Disable Laravel maintenance mode (php artisan up)
 decorators:
+  - name: tags
+    args:
+      - domain:app-lifecycle
+      - domain:framework
+      - domain:language-php
+      - effect:write
+      - audience:agent-safe
+      - scope:app
+      - scope:local
   - name: attach
     args:
       position: after

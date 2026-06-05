@@ -1,5 +1,14 @@
 description: Run Laravel database migrations (php artisan migrate)
 decorators:
+  - name: tags
+    args:
+      - domain:db
+      - domain:framework
+      - domain:language-php
+      - effect:write
+      - audience:agent-safe
+      - scope:app
+      - scope:local
   - name: attach
     args:
       position: before

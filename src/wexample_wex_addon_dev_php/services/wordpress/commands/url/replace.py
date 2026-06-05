@@ -4,6 +4,8 @@ from typing import TYPE_CHECKING
 
 from wexample_cli.decorator.command import command
 from wexample_cli.decorator.option import option
+from wexample_cli.const.tags import AudienceTag, EffectTag, ScopeTag
+from wexample_wex_addon_dev_php.const.tags import DomainTag
 from wexample_wex_core.const.globals import COMMAND_TYPE_SERVICE
 
 if TYPE_CHECKING:
@@ -35,7 +37,18 @@ if TYPE_CHECKING:
     description="Do not ask for confirmation",
 )
 @command(
-    type=COMMAND_TYPE_SERVICE, description="Replace the WordPress site URL using wp-cli"
+    type=COMMAND_TYPE_SERVICE, description="Replace the WordPress site URL using wp-cli",
+    tags=[
+        DomainTag.CONFIG,
+        DomainTag.FRAMEWORK,
+        DomainTag.LANGUAGE_PHP,
+        EffectTag.NETWORK_CALL,
+        EffectTag.SUBPROCESS_SPAWN,
+        EffectTag.WRITE,
+        AudienceTag.AGENT_SAFE,
+        ScopeTag.APP,
+        ScopeTag.LOCAL,
+    ],
 )
 def wordpress__url__replace(
     context: ExecutionContext,
