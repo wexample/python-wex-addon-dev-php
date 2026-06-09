@@ -1,5 +1,6 @@
 services:
   frankenphp:
+    restart: unless-stopped
     container_name: ${APP_PROJECT_NAME}_frankenphp
     image: dunglas/frankenphp:php8.4
     environment:

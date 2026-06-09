@@ -1,5 +1,6 @@
 services:
   composer:
+    restart: unless-stopped
     container_name: ${APP_PROJECT_NAME}_composer
     image: composer:latest
     working_dir: /var/www/html

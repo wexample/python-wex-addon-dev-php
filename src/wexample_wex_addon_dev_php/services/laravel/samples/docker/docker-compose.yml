@@ -1,5 +1,6 @@
 services:
   laravel:
+    restart: unless-stopped
     extends:
       file: ${SERVICE_LARAVEL_COMPOSE}
       service: laravel

@@ -1,5 +1,6 @@
 services:
   wordpress:
+    restart: unless-stopped
     container_name: ${APP_PROJECT_NAME}_wordpress
     image: wordpress:6.3.1-php8.2-apache
     expose:
@@ -21,6 +22,7 @@ services:
       service: default
 
   wordpress_cli:
+    restart: unless-stopped
     container_name: ${APP_PROJECT_NAME}_wordpress_cli
     image: wordpress:cli-2.7.1-php8.2
     environment:

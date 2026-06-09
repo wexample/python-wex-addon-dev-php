@@ -1,5 +1,6 @@
 services:
   wordpress:
+    restart: unless-stopped
     extends:
       file: ${SERVICE_WORDPRESS_COMPOSE}
       service: wordpress

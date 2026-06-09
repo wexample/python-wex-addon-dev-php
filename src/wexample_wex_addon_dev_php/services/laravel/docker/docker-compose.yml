@@ -1,5 +1,6 @@
 services:
   laravel:
+    restart: unless-stopped
     container_name: ${APP_PROJECT_NAME}_laravel
     extends:
       file: ${SERVICE_PHP_COMPOSE}

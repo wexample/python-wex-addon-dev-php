@@ -1,5 +1,6 @@
 services:
   php:
+    restart: unless-stopped
     container_name: ${APP_PROJECT_NAME}_php
     image: wexample/php-8.2:latest
     environment:

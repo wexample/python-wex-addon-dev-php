@@ -1,5 +1,6 @@
 services:
   phpmyadmin:
+    restart: unless-stopped
     container_name: ${APP_PROJECT_NAME}_phpmyadmin
     image: phpmyadmin/phpmyadmin:5.2
     environment:

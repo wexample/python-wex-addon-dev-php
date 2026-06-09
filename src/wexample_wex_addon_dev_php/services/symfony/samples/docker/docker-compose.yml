@@ -1,5 +1,6 @@
 services:
   symfony:
+    restart: unless-stopped
     extends:
       file: ${SERVICE_SYMFONY_COMPOSE}
       service: symfony

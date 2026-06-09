@@ -1,5 +1,6 @@
 services:
   php:
+    restart: unless-stopped
     extends:
       file: ${SERVICE_PHP_COMPOSE}
       service: php

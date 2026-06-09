@@ -1,5 +1,6 @@
 services:
   symfony:
+    restart: unless-stopped
     container_name: ${APP_PROJECT_NAME}_symfony
     image: gitlab-docker.wexample.com/wexample-public/docker/symfony:6.2
     extends:
