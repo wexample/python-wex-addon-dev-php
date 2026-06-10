@@ -1,6 +1,0 @@
-services:
-  frankenphp:
-    restart: unless-stopped
-    extends:
-      file: ${SERVICE_FRANKENPHP_COMPOSE}
-      service: frankenphp
