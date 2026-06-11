@@ -1,8 +1,8 @@
 services:
-  php:
+  new_php:
     restart: unless-stopped
-    container_name: ${APP_PROJECT_NAME}_php
-    image: wexample/php-8.2:latest
+    container_name: ${APP_PROJECT_NAME}_new_php
+    image: dunglas/frankenphp:php8.4
     environment:
       - VIRTUAL_HOST=${APP_DOMAINS_STRING}
       - VIRTUAL_PORT=80
@@ -10,9 +10,8 @@ services:
       - /var/www/html/.git
       - /var/www/html/.wex
       - ${APP_PATH}:/var/www/html
+      - ${BIND_CADDYFILE}:/etc/frankenphp/Caddyfile:ro
       - ${BIND_WEB_PHP_INI}:/usr/local/etc/php/conf.d/web.ini:ro
-      - ${BIND_WEB_APACHE_CONF}:/etc/apache2/sites-enabled/000-default.conf:ro
-      - ${APP_SETUP_PATH}env/${APP_ENV}/cron/default.cron:/var/default.cron
     extends:
       file: ${SERVICE_DEFAULT_COMPOSE}
       service: default

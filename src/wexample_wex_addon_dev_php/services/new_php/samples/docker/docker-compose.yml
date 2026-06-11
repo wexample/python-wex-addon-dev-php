@@ -1,0 +1,6 @@
+services:
+  new_php:
+    restart: unless-stopped
+    extends:
+      file: ${SERVICE_NEW_PHP_COMPOSE}
+      service: new_php
