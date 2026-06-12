@@ -4,7 +4,7 @@ build-backend = "pdm.backend"
 
 [project]
 name = "wexample-wex-addon-dev-php"
-version = "8.8.1"
+version = "8.8.2"
 description = "Python dev addon for wex"
 authors = [{name = "weeger", email = "contact@wexample.com"}]
 requires-python = ">=3.10"
@@ -14,7 +14,7 @@ dependencies = [
     "cattrs>=23.1.0",
     "wexample-filestate-php>=6.3.0",
     "wexample-wex-addon-ai>=9.0.0",
-    "wexample-wex-addon-app>=24.1.0",
+    "wexample-wex-addon-app>=25.0.0",
     "wexample-wex-addon-dev-javascript>=7.12.0",
 ]
 
