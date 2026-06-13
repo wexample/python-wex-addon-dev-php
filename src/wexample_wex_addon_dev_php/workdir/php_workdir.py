@@ -63,6 +63,14 @@ class PhpWorkdir(WithAiWorkdirMixin, CodeBaseWorkdir):
 
         return f"{string_to_kebab_case(self.get_vendor_name())}/{string_to_kebab_case(self.get_project_name())}"
 
+    def has_tests(self) -> bool:
+        # Only real PHPUnit test classes count; the tests/ directory itself
+        # may be empty scaffolding.
+        tests_path = self.get_path() / "tests"
+        if not tests_path.is_dir():
+            return False
+        return any(tests_path.rglob("*Test.php"))
+
     def prepare_value(self, raw_value: DictConfig | None = None) -> DictConfig:
         from wexample_filestate.const.disk import DiskItemType
         from wexample_helpers.helpers.array import array_dict_get_by
@@ -120,6 +128,15 @@ class PhpWorkdir(WithAiWorkdirMixin, CodeBaseWorkdir):
         )
 
         return raw_value
+
+    def test_run(self, format: str | None = None) -> None:
+        phpunit = self.get_path() / "vendor" / "bin" / "phpunit"
+        if not phpunit.exists():
+            raise RuntimeError(
+                f"{self.get_package_name()} has tests but vendor/bin/phpunit "
+                "is missing; run composer install in the package."
+            )
+        self.shell_run_for_app(cmd=[str(phpunit)])
 
     def _create_php_file_children_filter(self) -> ChildrenFileFactoryOption:
         from wexample_filestate.const.disk import DiskItemType
