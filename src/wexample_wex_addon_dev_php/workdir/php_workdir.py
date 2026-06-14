@@ -73,7 +73,6 @@ class PhpWorkdir(WithAiWorkdirMixin, CodeBaseWorkdir):
 
     def prepare_value(self, raw_value: DictConfig | None = None) -> DictConfig:
         from wexample_filestate.const.disk import DiskItemType
-        from wexample_helpers.helpers.array import array_dict_get_by
 
         from wexample_wex_addon_dev_php.file.php_composer_json_file import (
             PhpComposerJsonFile,
@@ -95,15 +94,12 @@ class PhpWorkdir(WithAiWorkdirMixin, CodeBaseWorkdir):
             }
         )
 
-        # Add rules to .gitignore
-        array_dict_get_by("name", ".gitignore", children).setdefault(
-            "should_contain_lines", []
-        ).extend(
-            [
-                ".php-cs-fixer.cache",
-                ".scannerwork",
-                "/vendor",
-            ]
+        self.add_gitignore_rules(
+            children,
+            ".php-cs-fixer.cache",
+            ".scannerwork",
+            "/vendor",
+            section="PHP",
         )
 
         children.extend(
