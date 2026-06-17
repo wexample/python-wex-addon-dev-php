@@ -94,14 +94,17 @@ class PhpPackageWorkdir(WithRunnerWorkdirMixin, PhpWorkdir):
         )
         from wexample_helpers_git.helpers.git import git_has_changes_since_tag
 
-        if not git_has_changes_since_tag(last_tag, "src", cwd=self.get_path()):
+        path = self.get_path()
+
+        if not git_has_changes_since_tag(last_tag, "src", cwd=path):
             return UPGRADE_TYPE_MINOR
 
         try:
+            runners = self.get_runners()
             package_rel = str(
-                self.get_path()
+                path
                 .resolve()
-                .relative_to(self.get_runners()["roave"].mount_path)
+                .relative_to(runners["roave"].mount_path)
             )
 
             self.log(f"Running roave backward compatibility check from {last_tag}...")

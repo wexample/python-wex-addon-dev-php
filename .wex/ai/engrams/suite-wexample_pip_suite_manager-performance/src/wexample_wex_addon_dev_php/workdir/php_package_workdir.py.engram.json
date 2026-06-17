@@ -1,0 +1,11 @@
+{
+  "engram_version": 1,
+  "source_key": "src/wexample_wex_addon_dev_php/workdir/php_package_workdir.py",
+  "cache_nonce": "1c2800147ebc4367950bb7b61bd21d00",
+  "last_visited_at": "2026-06-17T05:48:55+00:00",
+  "last_rev": "4ac864f31646c2b28509eda1b2eca7288e8c2c49",
+  "last_decision": "edit",
+  "kinds": [],
+  "notes": "hoisted self.get_path() and self.get_runners() (subprocess) out of _classify_version_bump hot path",
+  "in_progress": null
+}
