@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from wexample_wex_core.common.abstract_addon_manager import AbstractAddonManager
+
 if TYPE_CHECKING:
     from typing import Any
-
-from wexample_wex_core.common.abstract_addon_manager import AbstractAddonManager
 
 
 class PhpAddonManager(AbstractAddonManager):

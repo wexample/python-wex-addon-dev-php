@@ -6,7 +6,7 @@ git:
 global:
   name: wex_addon_dev_php
   type: app
-  version: 8.10.1
+  version: 8.11.0
 wex:
   migration: 1
   version: 6.0.112
