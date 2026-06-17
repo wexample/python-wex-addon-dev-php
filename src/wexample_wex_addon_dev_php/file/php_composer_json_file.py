@@ -33,7 +33,7 @@ class PhpComposerJsonFile(AppDependenciesConfigFileMixin, JsonFile):
         group_key = "require-dev" if group == "dev" else "require"
 
         # Composer uses simple version constraints (no pip-style operators)
-        constraint = f"{operator}{version}".strip()
+        constraint = (f"{operator}{version}" if operator else version).strip()
 
         config = self.read_config()
 
@@ -62,7 +62,7 @@ class PhpComposerJsonFile(AppDependenciesConfigFileMixin, JsonFile):
         content["name"] = workdir.get_package_name()
         content["version"] = workdir.get_setup_version()
 
-        return super().dumps(content or {})
+        return super().dumps(content)
 
     def get_dependencies_versions(
         self, optional: bool = False, group: str = "dev"

@@ -1,0 +1,11 @@
+{
+  "engram_version": 1,
+  "source_key": "src/wexample_wex_addon_dev_php/file/php_composer_json_file.py",
+  "cache_nonce": "1c2800147ebc4367950bb7b61bd21d00",
+  "last_visited_at": "2026-06-17T05:45:58+00:00",
+  "last_rev": "5eda1e8c4d147f139f4c8c7339c177452bf5ddf5",
+  "last_decision": "edit",
+  "kinds": [],
+  "notes": "skip f-string alloc when operator empty; drop dead `or {}` fallback in dumps after content always has keys",
+  "in_progress": null
+}
