@@ -1,0 +1,11 @@
+{
+  "engram_version": 1,
+  "source_key": "src/wexample_wex_addon_dev_php/config_value/php_package_readme_config_value.py",
+  "cache_nonce": "1c2800147ebc4367950bb7b61bd21d00",
+  "last_visited_at": "2026-06-17T05:45:07+00:00",
+  "last_rev": "6059ea818d1ae7b6680fbdb483840b9dc3cebcea",
+  "last_decision": "skip",
+  "kinds": [],
+  "notes": "single one-liner return, no loop or repeated lookup — nothing to optimize",
+  "in_progress": null
+}
