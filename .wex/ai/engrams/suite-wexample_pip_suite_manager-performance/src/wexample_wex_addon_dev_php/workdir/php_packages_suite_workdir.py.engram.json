@@ -1,0 +1,11 @@
+{
+  "engram_version": 1,
+  "source_key": "src/wexample_wex_addon_dev_php/workdir/php_packages_suite_workdir.py",
+  "cache_nonce": "1c2800147ebc4367950bb7b61bd21d00",
+  "last_visited_at": "2026-06-17T05:49:25+00:00",
+  "last_rev": "7e878390697c808c6b17dbd673918bca1853c7c8",
+  "last_decision": "skip",
+  "kinds": [],
+  "notes": "only short 3-method stub; short-circuit order correct, deferred import is circular-import guard (sys.modules cached), no hot path",
+  "in_progress": null
+}
