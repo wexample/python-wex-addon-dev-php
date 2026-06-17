@@ -50,11 +50,7 @@ class PhpWorkdir(WithAiWorkdirMixin, CodeBaseWorkdir):
 
         options = super().get_options_providers()
 
-        options.extend(
-            [
-                PhpOptionsProvider,
-            ]
-        )
+        options.append(PhpOptionsProvider)
 
         return options
 
