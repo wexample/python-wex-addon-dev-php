@@ -2,10 +2,10 @@
   "engram_version": 1,
   "source_key": "src/wexample_wex_addon_dev_php/php_addon_manager.py",
   "cache_nonce": "1c2800147ebc4367950bb7b61bd21d00",
-  "last_visited_at": "2026-06-17T05:46:42+00:00",
-  "last_rev": "0b40047b8e6bbb56b6193bdb4ba80a8186695476",
-  "last_decision": "edit",
+  "last_visited_at": "2026-06-17T16:59:11+00:00",
+  "last_rev": "da2c4e1099d9075f79fe1e77080c8188d012f66b",
+  "last_decision": "skip",
   "kinds": [],
-  "notes": "guarded `from typing import Any` under TYPE_CHECKING — dead runtime import with __future__ annotations",
+  "notes": "single stub method; lazy import already cached by sys.modules, no hot path or redundant computation",
   "in_progress": null
 }
