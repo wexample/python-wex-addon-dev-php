@@ -68,7 +68,7 @@ def wordpress__url__replace(
     app_project_name = runtime.search("app.project_name").get_str()
     cli_container = f"{app_project_name}_wordpress_cli"
 
-    target_url = _normalize_url(new_url or _guess_new_url(service))
+    target_url = _normalize_url(new_url or _guess_new_url(runtime))
 
     if old_url is None:
         detect = subprocess.run(
@@ -109,16 +109,15 @@ def wordpress__url__replace(
     )
 
 
-def _guess_new_url(service: AppService) -> str:
-    runtime = service.app_workdir.get_runtime_config()
+def _guess_new_url(runtime) -> str:
     domains = runtime.search("app.domains").get_list_or_default([])
     if domains:
         first = domains[0].get_str()
-        return _normalize_url(f"https://{first}")
+        return f"https://{first}"
 
     domain = runtime.search("app.domain").get_str_or_none()
     if domain:
-        return _normalize_url(f"https://{domain}")
+        return f"https://{domain}"
 
     raise RuntimeError("Unable to guess the new WordPress URL from runtime app domains")
 

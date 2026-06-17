@@ -1,0 +1,11 @@
+{
+  "engram_version": 1,
+  "source_key": "src/wexample_wex_addon_dev_php/services/wordpress/commands/url/replace.py",
+  "cache_nonce": "1c2800147ebc4367950bb7b61bd21d00",
+  "last_visited_at": "2026-06-17T05:47:54+00:00",
+  "last_rev": "0d31f57ce7a8c995251c5fc9f4a81c0cae4295df",
+  "last_decision": "edit",
+  "kinds": [],
+  "notes": "pass pre-computed runtime to _guess_new_url to avoid double get_runtime_config(); drop redundant _normalize_url calls inside _guess_new_url (caller always normalizes)",
+  "in_progress": null
+}
