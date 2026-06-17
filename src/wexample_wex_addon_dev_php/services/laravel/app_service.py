@@ -13,13 +13,24 @@ _D = DiskItemType.DIRECTORY
 # mode: Permission denied" on storage/logs.
 _LARAVEL_WEB_OWNER = "82:82"
 
-
-class AppService(BaseAppService):
-    def get_workdir_contribution(self, workdir) -> dict:
-        return {
+_WORKDIR_CONTRIBUTION: dict = {
+    "children": [
+        {
+            "name": "storage",
+            "type": _D,
+            "should_exist": True,
+            "mode": {
+                "owner": _LARAVEL_WEB_OWNER,
+                "recursive": True,
+            },
+        },
+        {
+            "name": "bootstrap",
+            "type": _D,
+            "should_exist": True,
             "children": [
                 {
-                    "name": "storage",
+                    "name": "cache",
                     "type": _D,
                     "should_exist": True,
                     "mode": {
@@ -27,21 +38,12 @@ class AppService(BaseAppService):
                         "recursive": True,
                     },
                 },
-                {
-                    "name": "bootstrap",
-                    "type": _D,
-                    "should_exist": True,
-                    "children": [
-                        {
-                            "name": "cache",
-                            "type": _D,
-                            "should_exist": True,
-                            "mode": {
-                                "owner": _LARAVEL_WEB_OWNER,
-                                "recursive": True,
-                            },
-                        },
-                    ],
-                },
-            ]
-        }
+            ],
+        },
+    ]
+}
+
+
+class AppService(BaseAppService):
+    def get_workdir_contribution(self, workdir) -> dict:
+        return _WORKDIR_CONTRIBUTION

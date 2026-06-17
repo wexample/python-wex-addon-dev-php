@@ -1,0 +1,11 @@
+{
+  "engram_version": 1,
+  "source_key": "src/wexample_wex_addon_dev_php/services/laravel/app_service.py",
+  "cache_nonce": "1c2800147ebc4367950bb7b61bd21d00",
+  "last_visited_at": "2026-06-17T16:59:40+00:00",
+  "last_rev": "4382918a3581c080dbc3a1f3d46d419581ce7fe9",
+  "last_decision": "edit",
+  "kinds": [],
+  "notes": "hoisted static workdir contribution dict out of get_workdir_contribution hot path to module-level constant",
+  "in_progress": null
+}
