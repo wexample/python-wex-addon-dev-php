@@ -1,0 +1,11 @@
+{
+  "engram_version": 1,
+  "source_key": "src/wexample_wex_addon_dev_php/workdir/symfony_workdir.py",
+  "cache_nonce": "1c2800147ebc4367950bb7b61bd21d00",
+  "last_visited_at": "2026-06-17T05:50:42+00:00",
+  "last_rev": "0bcfcada9a08519609e1baf6ed5f39f53cc9e2ac",
+  "last_decision": "skip",
+  "kinds": [],
+  "notes": "two tiny delegation methods, each with a single get_path() call and one object creation — no repeated computations or hoistable invariants",
+  "in_progress": null
+}
