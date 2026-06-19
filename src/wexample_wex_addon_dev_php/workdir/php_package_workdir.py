@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 
 from wexample_helpers.decorator.base_class import base_class
 from wexample_helpers.helper.string import string_to_pascal_case
-from wexample_helpers_git.helpers.git import (
+from wexample_helpers_git.helper.git import (
     git_tag_annotated,
     git_tag_exists,
 )
@@ -92,7 +92,7 @@ class PhpPackageWorkdir(WithRunnerWorkdirMixin, PhpWorkdir):
             UPGRADE_TYPE_MAJOR,
             UPGRADE_TYPE_MINOR,
         )
-        from wexample_helpers_git.helpers.git import git_has_changes_since_tag
+        from wexample_helpers_git.helper.git import git_has_changes_since_tag
 
         path = self.get_path()
 
