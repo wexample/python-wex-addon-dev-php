@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from wexample_helpers.decorator.base_class import base_class
-from wexample_helpers.helpers.string import string_to_pascal_case
+from wexample_helpers.helper.string import string_to_pascal_case
 from wexample_helpers_git.helpers.git import (
     git_tag_annotated,
     git_tag_exists,
@@ -34,7 +34,7 @@ class PhpPackageWorkdir(WithRunnerWorkdirMixin, PhpWorkdir):
     def get_runners(self) -> dict[str, RunnerConfig]:
         from pathlib import Path
 
-        from wexample_helpers.helpers.shell import shell_run
+        from wexample_helpers.helper.shell import shell_run
         from wexample_runner.runner_config import RunnerConfig
 
         git_root = shell_run(
