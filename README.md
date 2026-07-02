@@ -1,6 +1,6 @@
 # wex_addon_dev_php
 
-Version: 8.13.0
+Version: 8.13.1
 
 Python dev addon for wex
 
