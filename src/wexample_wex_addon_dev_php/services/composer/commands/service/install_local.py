@@ -19,7 +19,8 @@ APP_DIR = "/var/www/html"
 VENDOR_DEV_DIR = "/var/www/vendor-dev"
 
 # The wexample php images ship a /usr/bin/composer wrapper pinned to an older
-# PHP binary; invoking the phar through PATH php guarantees the runtime version.
+# PHP binary; invoking the phar through PATH php guarantees the runtime
+# version. Images with a sane composer on PATH pass composer_bin="composer".
 COMPOSER_BIN = "php /usr/bin/composer.phar"
 
 
@@ -38,6 +39,7 @@ COMPOSER_BIN = "php /usr/bin/composer.phar"
 def composer__service__install_local(
     context: ExecutionContext,
     service: AppService,
+    composer_bin: str = COMPOSER_BIN,
 ) -> None:
     """Generic composer wiring, reusable by any PHP runtime service.
 
@@ -61,7 +63,7 @@ def composer__service__install_local(
     script = f"""
 set -e
 cd {APP_DIR}
-{COMPOSER_BIN} install --no-scripts
+{composer_bin} install --no-scripts
 for vendor in {vendors}; do
   [ -d "{VENDOR_DEV_DIR}/$vendor" ] || continue
   mkdir -p "vendor/$vendor"
@@ -73,7 +75,7 @@ for vendor in {vendors}; do
     echo "  symlinked $vendor/$pkg"
   done
 done
-{COMPOSER_BIN} dump-autoload
+{composer_bin} dump-autoload
 """
 
     context.io.log(f"Wiring local composer packages ({vendors}) into vendor/…")

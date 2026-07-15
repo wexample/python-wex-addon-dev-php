@@ -23,13 +23,5 @@ class SymfonyWorkdir(PhpWorkdir):
 
         return workdir_javascript.apply(result=result, **kwargs)
 
-    def libraries_sync(self) -> None:
-        super().libraries_sync()
-
-        self.log("Syncing Javascript...")
-
-        workdir_javascript = JavascriptWorkdir.create_from_path(
-            path=self.get_path(), io=self.io
-        )
-
-        workdir_javascript.libraries_sync()
+    # NOTE: package.json library syncing is handled natively by PhpWorkdir's
+    # dependency manifests (get_dependency_manifests), no facade needed here.

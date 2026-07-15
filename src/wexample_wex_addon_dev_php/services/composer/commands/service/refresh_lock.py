@@ -19,7 +19,7 @@ if TYPE_CHECKING:
 
 
 @option(
-    name="packages",
+    name="composer_packages",
     type=str,
     required=True,
     description="Space-separated composer package names whose constraint changed in composer.json",
@@ -39,7 +39,8 @@ if TYPE_CHECKING:
 def composer__service__refresh_lock(
     context: ExecutionContext,
     service: AppService,
-    packages: str,
+    composer_packages: str,
+    composer_bin: str = COMPOSER_BIN,
 ) -> None:
     """Generic composer lock refresh, reusable by any PHP runtime service.
 
@@ -48,12 +49,16 @@ def composer__service__refresh_lock(
     """
     # --no-install rewrites composer.lock only: vendor/ may hold local
     # development symlinks that a real install would overwrite.
+    # --with-all-dependencies lets the updated packages' own (locked)
+    # dependencies move too, or sibling library bumps would dead-lock the
+    # partial update.
     output = service.addon_manager.docker_exec(
         service.name,
         [
             "/bin/sh",
             "-c",
-            f"cd {APP_DIR} && {COMPOSER_BIN} update --no-install {packages}",
+            f"cd {APP_DIR} && {composer_bin} update --no-install"
+            f" --with-all-dependencies {composer_packages}",
         ],
     )
     context.io.log(output)

@@ -38,6 +38,23 @@ class PhpWorkdir(WithAiWorkdirMixin, CodeBaseWorkdir):
     def get_dependencies_versions(self) -> dict[str, str]:
         return self.get_app_config_file().get_dependencies_versions()
 
+    def get_dependency_manifests(self) -> list:
+        from wexample_wex_addon_dev_javascript.file.node_package_json_file import (
+            NodePackageJsonFile,
+        )
+
+        manifests = super().get_dependency_manifests()
+
+        # PHP apps are frequently polyglot (Symfony/Laravel assets built with
+        # node): their package.json must follow library syncs like
+        # composer.json does.
+        package_json = self.find_by_type(NodePackageJsonFile)
+        if package_json is not None and package_json.get_path().exists():
+            package_json.read_text(reload=True)
+            manifests.append(package_json)
+
+        return manifests
+
     def get_main_code_file_extension(self) -> str:
         from wexample_filestate_php.const.php_file import PHP_FILE_EXTENSION
 
@@ -87,6 +104,22 @@ class PhpWorkdir(WithAiWorkdirMixin, CodeBaseWorkdir):
                 "name": "composer.json",
                 "type": DiskItemType.FILE,
                 "should_exist": True,
+            }
+        )
+
+        # Polyglot apps: expose the package.json as a dependency manifest
+        # (see get_dependency_manifests). No should_exist: never created when
+        # absent — the workdir path is not resolved yet at this stage, so the
+        # disk check happens in get_dependency_manifests.
+        from wexample_wex_addon_dev_javascript.file.node_package_json_file import (
+            NodePackageJsonFile,
+        )
+
+        children.append(
+            {
+                "class": NodePackageJsonFile,
+                "name": "package.json",
+                "type": DiskItemType.FILE,
             }
         )
 

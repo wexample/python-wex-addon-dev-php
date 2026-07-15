@@ -14,6 +14,9 @@ from wexample_wex_addon_dev_php.const.tags import DomainTag
 from wexample_wex_addon_dev_php.services.composer.commands.service.refresh_lock import (
     composer__service__refresh_lock,
 )
+from wexample_wex_addon_dev_php.services.symfony.commands.service.install_local import (
+    COMPOSER_BIN,
+)
 
 if TYPE_CHECKING:
     from wexample_cli.context.execution_context import ExecutionContext
@@ -47,7 +50,7 @@ if TYPE_CHECKING:
         ScopeTag.LOCAL,
     ],
 )
-def laravel__service__refresh_lock(
+def symfony__service__refresh_lock(
     context: ExecutionContext,
     service: AppService,
     composer_packages: str = "",
@@ -56,7 +59,10 @@ def laravel__service__refresh_lock(
     # Generic lock refreshes, executed in this service's container.
     if composer_packages:
         composer__service__refresh_lock.function(
-            context=context, service=service, composer_packages=composer_packages
+            context=context,
+            service=service,
+            composer_packages=composer_packages,
+            composer_bin=COMPOSER_BIN,
         )
     if npm_packages:
         node__service__refresh_lock.function(
