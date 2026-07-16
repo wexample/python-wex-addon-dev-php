@@ -5,10 +5,10 @@ from typing import TYPE_CHECKING
 from wexample_cli.const.tags import AudienceTag, EffectTag, ScopeTag
 from wexample_cli.decorator.command import command
 from wexample_cli.decorator.option import option
-from wexample_wex_core.const.globals import COMMAND_TYPE_SERVICE
 from wexample_wex_addon_dev_javascript.services.node.commands.service.refresh_lock import (
     node__service__refresh_lock,
 )
+from wexample_wex_core.const.globals import COMMAND_TYPE_SERVICE
 
 from wexample_wex_addon_dev_php.const.tags import DomainTag
 from wexample_wex_addon_dev_php.services.composer.commands.service.refresh_lock import (

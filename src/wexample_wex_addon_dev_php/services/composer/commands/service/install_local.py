@@ -18,10 +18,10 @@ if TYPE_CHECKING:
 APP_DIR = "/var/www/html"
 VENDOR_DEV_DIR = "/var/www/vendor-dev"
 
-# The wexample php images ship a /usr/bin/composer wrapper pinned to an older
-# PHP binary; invoking the phar through PATH php guarantees the runtime
-# version. Images with a sane composer on PATH pass composer_bin="composer".
-COMPOSER_BIN = "php /usr/bin/composer.phar"
+# Dev images are expected to ship a working composer on PATH (official
+# installer against the runtime php). Images with a broken wrapper (e.g. a
+# /usr/bin/composer pinned to an older php) pass their own composer_bin.
+COMPOSER_BIN = "composer"
 
 
 @command(
