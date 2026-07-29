@@ -76,3 +76,45 @@ class PhpComposerJsonFile(AppDependenciesConfigFileMixin, JsonFile):
         # Use to_dict_or_none() (not get_dict_or_default) so nested ConfigValue
         # wrappers are unwrapped to native str — matches the dict[str, str] signature.
         return require.to_dict_or_none() or {}
+
+    def set_private_registry_packages(self, package_names: list[str]) -> bool:
+        """Bound every custom composer registry to the private packages.
+
+        A custom registry holding some (possibly stale) versions of a
+        publicly-published package is canonical for it and masks the newer
+        versions available on packagist; the `only` filter keeps each
+        registry to its own perimeter.
+        """
+        # Cross-ecosystem callers pass every private package; npm scoped
+        # names (@vendor/name) can never be composer packages.
+        package_names = [n for n in package_names if not n.startswith("@")]
+        if not package_names:
+            return False
+
+        parsed = self.read_parsed()
+        repositories = parsed.get("repositories")
+        if isinstance(repositories, dict):
+            entries = repositories.values()
+        elif isinstance(repositories, list):
+            entries = repositories
+        else:
+            return False
+
+        only = sorted(package_names)
+        changed = False
+        for entry in entries:
+            if not isinstance(entry, dict) or entry.get("type") != "composer":
+                continue
+            # Only forge package registries (gitlab-style URL) host our
+            # private packages; other composer repositories (packagist
+            # mirrors, nova.laravel.com…) serve unrelated packages and must
+            # not be restricted.
+            if "/packages/composer" not in entry.get("url", ""):
+                continue
+            if entry.get("only") != only:
+                entry["only"] = only
+                changed = True
+
+        if changed:
+            self.write_parsed()
+        return changed
