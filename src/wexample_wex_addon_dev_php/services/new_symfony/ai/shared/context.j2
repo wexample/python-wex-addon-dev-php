@@ -1,1 +1,4 @@
 {% include "new_php.j2" %}
+{% if app.env == 'local' %}
+    Local wiring: the application is already wired to its local dependencies, or the user wires it themselves by running `wex setup::install --env local`. Never wire it manually (no editing of composer paths, symlinks or autoload config to point at local sources) — run that command, or ask the user to.
+{% endif %}
