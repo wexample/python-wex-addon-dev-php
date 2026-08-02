@@ -1,6 +1,4 @@
 {% include "new_php.j2" -%}
-- Read the matching documentation before acting on one of these — it carries rules you cannot infer from the code alone:
-  * creating or modifying an entity → `new_symfony:entity`
 {%- if app.env == 'local' %}
 - Local wiring: the application is already wired to its local dependencies, or the user wires it themselves by running `wex setup::install --env local`. Never wire it manually (no editing of composer paths, symlinks or autoload config to point at local sources) — run that command, or ask the user to.
 {%- endif %}
