@@ -1,6 +1,0 @@
-services:
-  new_symfony:
-    container_name: ${APP_PROJECT_NAME}_new_symfony
-    extends:
-      file: ${SERVICE_NEW_PHP_COMPOSE}
-      service: new_php

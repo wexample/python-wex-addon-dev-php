@@ -1,6 +1,0 @@
-# Modern Symfony service: thin wrapper over new_php (FrankenPHP-based).
-# Temporary side-by-side with the legacy `symfony` service.
-name: new_symfony
-extends: new_php
-docker:
-  compose: docker/docker-compose.yml
